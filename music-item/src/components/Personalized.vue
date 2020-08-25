@@ -2,11 +2,11 @@
     <div class="personalized">
       <div class="personalized-top">
         <span></span>
-        <h3>推荐歌单</h3>
+        <h3>{{title}}</h3>
       </div>
       <div class="personalized-list">
-        <a class="item" href="#" v-for="data in personalized" :key="data.id">
-          <img :src="data.picUrl" alt="">
+        <a class="item" href="#" v-for="data in datas" :key="data.id" @click="getDetail(data.id)">
+          <img v-lazy="data.picUrl" alt="">
           <p>{{data.name}}</p>
         </a>
       </div>
@@ -17,10 +17,20 @@
 export default {
   name: 'Personalized',
   props: {
-    personalized: {
+    datas: {
       type: Array,
       default: () => [],
       required: true
+    },
+    title: {
+      type: String,
+      default: '',
+      required: true
+    }
+  },
+  methods: {
+    getDetail (id) {
+      this.$emit('getDetail', id)
     }
   }
 }
@@ -78,6 +88,7 @@ export default {
         height: 60px;
         line-height: 30px;
         overflow: hidden;
+        text-align: center;
         @include font_color();
         @include clamp(2);
         @include font_size($font_samll);

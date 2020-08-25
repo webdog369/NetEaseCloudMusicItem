@@ -28,6 +28,11 @@ const Search = (resolve) => {
     resolve(module)
   })
 }
+const Detail = (resolve) => {
+  import('../views/Detail').then((module) => {
+    resolve(module)
+  })
+}
 
 // 调用vue-router插件
 Vue.use(VueRouter)
@@ -35,7 +40,14 @@ Vue.use(VueRouter)
 // 定义路由规则
 const routes = [
   { path: '/', redirect: '/recommend' },
-  { path: '/recommend', component: Recommend },
+  {
+    path: '/recommend',
+    component: Recommend,
+    children: [
+      { path: 'detail/:id', component: Detail }
+    ]
+  },
+
   { path: '/singer', component: Singer },
   { path: '/rank', component: Rank },
   { path: '/search', component: Search }

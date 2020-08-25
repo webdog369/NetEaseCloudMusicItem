@@ -53,6 +53,12 @@
     color: $font-color-theme2;
   }
 }
+@mixin font_color_songName(){
+  color: #222;
+  [data-theme=theme2] & {
+    color: $font-color-theme2;
+  }
+}
 @mixin font_active_color(){
   color: $font-active-color-theme;
   [data-theme=theme1] & {
