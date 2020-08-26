@@ -1,5 +1,7 @@
 <template>
 <div class="detail">
+  <ScrollView>
+    <div>
   <div class="header">
     <div class="top" >
       <div class="mask" ref="mask"></div>
@@ -29,7 +31,7 @@
    <h3>歌曲列表</h3>
   <div class="song-list-item" v-for="(song, i) in songsDetailList" :key="song.id">
     <div class="item-left">
-      <span>{{i+1}}</span>
+      <div class="num">{{i+1}}</div>
       <div class="song-title">
         <p class="song-name">{{song.name}}</p>
         <p class="song-data"><i></i>{{song.ar[0].name}}-{{song.al.name}}</p>
@@ -37,21 +39,24 @@
     </div>
     <div class="item-right"></div>
   </div>
+    </div>
+  </ScrollView>
 </div>
 </template>
 
 <script>
 import { getPlayList, getPlayListUser, getSongDetail } from '../api'
+import ScrollView from '../components/ScrollView'
 
 export default {
   name: 'Detail',
+  components: {
+    ScrollView
+  },
   created () {
     getPlayList(this.$route.params.id).then(data => {
       this.playList = data.playlist
     })
-  },
-  mounted () {
-
   },
   computed: {
     playCount () {
@@ -99,8 +104,8 @@ export default {
   left: 0;
   right: 0;
   bottom: 0;
-  background:#fff;
-  overflow: auto;
+  @include bg_sub_color;
+  overflow: hidden;
   .header{
     width: 100%;
     /*background: yellowgreen;*/
@@ -212,8 +217,10 @@ export default {
       }
       .description{
         width: 100%;
+        height: 85px;
         padding-top: 15px;
         padding-bottom: 30px;
+        overflow: auto;
         span{
          i{
            display: inline-block;
@@ -244,22 +251,32 @@ export default {
     @include bg_sub_color;
     display: flex;
     justify-content: space-between;
+    overflow: hidden;
     .item-left{
       width: 80%;
       height: 100%;
       /*background: tomato;*/
-      display: flex;
       padding-left: 10px;
-      span{
+      .num{
         display: inline-block;
-        width: 80px;
-        height: 100px;
-        text-align: center;
+        width: 10%;
+        height: 100%;
         line-height: 100px;
+        text-align: center;
         color: #666;
+        float: left;
+        &:after{
+          content: "";
+          height: 100%;
+          clear: both;
+        }
       }
       .song-title{
+        width: 80%;
+        height: 100%;
+        display: inline-block;
         p:nth-child(1){
+          width: 100%;
           height: 50%;
           line-height: 50px;
           @include font_size($font_large);
@@ -268,6 +285,7 @@ export default {
           @include clamp(1);
         }
         p:nth-child(2){
+          width: 80%;
           height: 50%;
           line-height: 50px;
           @include font_size($font_samll);
