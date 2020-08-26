@@ -11,3 +11,7 @@ export const getTopAlbum = () => Network.get('/album/newest')
 export const getNewSong = () => Network.get('/personalized/newsong')
 // 获取最新歌曲
 export const getPlayList = (id) => Network.get('/playlist/detail?id=' + id)
+// 获取歌单用户信息
+export const getPlayListUser = (id) => Network.get('/user/detail?uid=' + id)
+// 获取歌曲详情
+export const getSongDetail = (id) => Network.get('/song/detail?ids=' + id)

@@ -4,7 +4,7 @@
       <div>
         <Banner :banners='bannerData'></Banner>
         <personalized :datas='personalizedData' :title="'推荐歌单'" @getDetail="getDetail"></personalized>
-        <personalized :datas='topAlbum' :title="'最新专辑'"></personalized>
+        <personalized :datas='topAlbum' :title="'最新专辑'" ></personalized>
         <song-list :songsData="songs"></song-list>
       </div>
     </ScrollView>
