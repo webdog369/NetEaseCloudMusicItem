@@ -15,9 +15,9 @@
 </template>
 
 <script>
-import Banner from '../components/Banner'
-import Personalized from '../components/Personalized'
-import SongList from '../components/SongList'
+import Banner from '../components/recomment/Banner'
+import Personalized from '../components/recomment/Personalized'
+import SongList from '../components/recomment/SongList'
 import ScrollView from '../components/ScrollView'
 import { getPersonalized, getBanner, getTopAlbum, getNewSong } from '../api'
 

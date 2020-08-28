@@ -28,8 +28,8 @@ export default {
 </script>
 
 <style scoped lang="scss">
-  @import "../assets/css/mixin";
-  @import "../assets/css/variable";
+  @import "../../assets/css/mixin";
+  @import "../../assets/css/variable";
 .song-list{
   margin-top: 20px;
   @include bg_sub_color();
@@ -90,7 +90,7 @@ export default {
           width: 33px;
           height: 23px;
           /*background-color: #000;*/
-          background-image: url("../assets/images/index_icon_2x.png");
+          background-image: url("../../assets/images/index_icon_2x.png");
           background-repeat: no-repeat;
           background-size:450px;
           background-position:0 0;
@@ -102,7 +102,7 @@ export default {
     .item-right{
       width: 100px;
       height: 100px;
-      background-image: url("../assets/images/index_icon_2x.png");
+      background-image: url("../../assets/images/index_icon_2x.png");
       background-repeat: no-repeat;
       background-size:520px;
       background-position: -60px 15px;

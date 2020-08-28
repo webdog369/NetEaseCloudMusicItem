@@ -22,8 +22,8 @@ export default {
 </script>
 
 <style scoped lang="scss">
-  @import "src/assets/css/variable";
-  @import "src/assets/css/mixin";
+  @import "../assets/css/variable";
+  @import "../assets/css/mixin";
 .tabbar{
   width: 100%;
   height: 84px;

@@ -71,7 +71,7 @@ export default {
 
 <!--自定义激活状态的样式-->
 <style lang="scss">
-  @import "../assets/css/mixin";
+  @import "../../assets/css/mixin";
   .swiper-pagination-bullet{
     width: 16px;
     height: 16px;

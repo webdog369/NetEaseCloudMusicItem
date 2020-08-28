@@ -280,8 +280,6 @@ export default {
         overflow: auto;
         span{
          i{
-           display: inline-block;
-           width: 100%;
            font-size: 28px;
            color: #666;
            font-style: normal;
