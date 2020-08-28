@@ -4,11 +4,13 @@
       <div>
         <Banner :banners='bannerData'></Banner>
         <personalized :datas='personalizedData' :title="'推荐歌单'" @getDetail="getDetail"></personalized>
-        <personalized :datas='topAlbum' :title="'最新专辑'" ></personalized>
+        <personalized :datas='topAlbum' :title="'最新专辑'" @getDetail="getDetail"></personalized>
         <song-list :songsData="songs"></song-list>
       </div>
     </ScrollView>
-    <router-view></router-view>
+    <transition>
+      <router-view></router-view>
+    </transition>
 </div>
 </template>
 
@@ -51,9 +53,9 @@ export default {
     }
   },
   methods: {
-    getDetail (id) {
+    getDetail (data) {
       this.$router.push({
-        path: `/recommend/detail/${id}`
+        path: `/recommend/detail/${data[0]}?type=${data[1]}`
       })
     }
   },
@@ -66,7 +68,7 @@ export default {
 }
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 .recommend{
   position: fixed;
   top: 184px;
@@ -74,5 +76,27 @@ export default {
   right: 0;
   bottom: 0;
   overflow: hidden;
+  .v-enter{
+    transform:translateX(100%);
+    opacity: 0;
+  }
+  .v-enter-active{
+    transition: all 500ms ease-in-out;
+  }
+  .v-enter-to{
+    transform:translateX(0);;
+    opacity: 1;
+  }
+  .v-leave{
+    transform:translateX(0);;
+    opacity: 1;
+  }
+  .v-leave-active{
+    transition: all 500ms ease-in-out;
+  }
+  .v-leave-to{
+    transform:translateX(100%);
+    opacity: 0;
+  }
 }
 </style>

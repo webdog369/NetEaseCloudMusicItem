@@ -15,3 +15,5 @@ export const getPlayList = (id) => Network.get('/playlist/detail?id=' + id)
 export const getPlayListUser = (id) => Network.get('/user/detail?uid=' + id)
 // 获取歌曲详情
 export const getSongDetail = (id) => Network.get('/song/detail?ids=' + id)
+// 获取专辑详情
+export const getAlbumDetail = (id) => Network.get('/album?id=' + id)

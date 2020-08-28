@@ -10,7 +10,7 @@ export default {
   name: 'ScrollView',
   mounted () {
     this.iscroll = new IScroll(this.$refs.wrapper, {
-      mousewheel: false,
+      mouseWheel: true,
       scrollbar: true,
       // 解决拖拽卡顿问题
       scrollX: false,

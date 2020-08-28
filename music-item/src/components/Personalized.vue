@@ -5,7 +5,7 @@
         <h3>{{title}}</h3>
       </div>
       <div class="personalized-list">
-        <a class="item" href="#" v-for="data in datas" :key="data.id" @click="getDetail(data.id)">
+        <a class="item" href="#" v-for="data in datas" :key="data.id" @click="getDetail(data.id,title)">
           <img v-lazy="data.picUrl" alt="">
           <p>{{data.name}}</p>
         </a>
@@ -29,8 +29,8 @@ export default {
     }
   },
   methods: {
-    getDetail (id) {
-      this.$emit('getDetail', id)
+    getDetail (id, title) {
+      this.$emit('getDetail', [id, title])
     }
   }
 }

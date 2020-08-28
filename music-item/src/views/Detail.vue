@@ -15,11 +15,12 @@
         <img v-lazy="playListUserData.avatarUrl" alt="">
         <span>{{playListUserData.nickname}}</span>
       </div>
+      <div class="back" @click="backPage">返回 >></div>
     </div>
     <div class="bottom">
       <div class="tag">
         <span>标签:</span>
-        <span v-for="tag in playList.tags" :key="tag">{{tag}}</span>
+        <span v-for="tag in tags" :key="tag">{{tag}}</span>
       </div>
       <div class="description" ref="des">
         <span v-for="(v,i) in description" :key="i">
@@ -45,7 +46,7 @@
 </template>
 
 <script>
-import { getPlayList, getPlayListUser, getSongDetail } from '../api'
+import { getPlayList, getPlayListUser, getSongDetail, getAlbumDetail } from '../api'
 import ScrollView from '../components/ScrollView'
 
 export default {
@@ -54,33 +55,70 @@ export default {
     ScrollView
   },
   created () {
-    getPlayList(this.$route.params.id).then(data => {
-      this.playList = data.playlist
-    })
+    // 判断歌单类型 请求不同的数据
+    if (this.$route.query.type === '推荐歌单') {
+      getPlayList(this.$route.params.id).then(data => {
+        this.playList = data.playlist
+      })
+    } else if (this.$route.query.type === '最新专辑') {
+      getAlbumDetail(this.$route.params.id).then(data => {
+        // 为适应模板数据格式 主动定义一个正确的模板
+        this.playList = {
+          name: data.album.name,
+          coverImgUrl: data.album.picUrl,
+          playCount: data.album.info.shareCount,
+          tags: data.album.tags,
+          description: data.album.description,
+          songs: data.songs
+        }
+        // 专辑作者和头像
+        this.playListUserData = {
+          nickname: data.album.artist.name,
+          avatarUrl: data.album.artist.picUrl
+        }
+      })
+    }
   },
   computed: {
+    // 处理歌单播放
     playCount () {
       return (this.playList.playCount / 10000).toFixed(1) + '万'
+    },
+    // 处理标签
+    tags () {
+      return (this.playList.tags !== '' ? this.playList.tags : ['暂无标签'])
     }
   },
   watch: {
+    // 为防止部分数据添加失败 监测在playList由 [] 到有数据的时候再添加数据
     playList () {
-      // 获取歌单提者信息
-      getPlayListUser(this.playList.userId).then(data => {
-        this.playListUserData = data.profile
-      })
+      // 给歌单顶部添加背景图片
       this.$refs.mask.style.backgroundImage = `url(${this.playList.coverImgUrl})`
-      this.description = this.playList.description.split('\n').slice(0, 3)
-
-      const songDataList = this.playList.trackIds.slice(0, 20)
+      // 定义一个数组接收歌单id
       const SongIds = []
-      for (const key of songDataList) {
-        SongIds.push(key.id)
+      // 判断歌单类型 请求不同的数据
+      if (this.$route.query.type === '推荐歌单') {
+        // 获取歌单提者信息
+        getPlayListUser(this.playList.userId).then(data => {
+          this.playListUserData = data.profile
+        })
+        // 提取歌单中前20条歌曲并获取到歌曲id 放入数组中
+        const songDataList = this.playList.trackIds.slice(0, 20)
+        for (const key of songDataList) {
+          SongIds.push(key.id)
+        }
+      } else if (this.$route.query.type === '最新专辑') {
+        const songDataList = this.playList.songs.slice(0, 20)
+        for (const key of songDataList) {
+          SongIds.push(key.id)
+        }
       }
       const ids = SongIds.toString()
       getSongDetail(ids).then(data => {
         this.songsDetailList = data.songs
       })
+
+      this.description = this.playList.description.split('\n').slice(0, 3)
     }
   },
   data () {
@@ -89,6 +127,11 @@ export default {
       playListUserData: {},
       description: [],
       songsDetailList: []
+    }
+  },
+  methods: {
+    backPage () {
+      window.history.back()
     }
   }
 }
@@ -165,7 +208,7 @@ export default {
           right: 0;
           display: inline-block;
           height: 30px;
-          width: 100px;
+          width: 120px;
           color: #fff;
           font-style: normal;
           font-size: 22px;
@@ -178,7 +221,7 @@ export default {
         position: absolute;
         left: 320px;
         top: 150px;
-        width: 200px;
+        width: 100%;
         height: 80px;
         /*background: yellowgreen;*/
         img{
@@ -192,6 +235,20 @@ export default {
           font-size: 25px;
           margin-left: 5px;
         }
+      }
+      .back{
+        position: absolute;
+        bottom: 60px;
+        right: 0;
+        width: 110px;
+        height: 50px;
+        line-height: 50px;
+        text-align: right;
+        color: #eee;
+        border-top-left-radius:20px;
+        border-bottom-left-radius:20px;
+        border: 1px solid #eee;
+        font-size: 25px;
       }
     }
     .bottom{
