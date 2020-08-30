@@ -64,6 +64,8 @@ export default {
     Personalized,
     SongList,
     ScrollView
+  },
+  computed: {
   }
 }
 </script>
@@ -74,6 +76,7 @@ export default {
   top: 184px;
   left: 0;
   right: 0;
+  /*bottom: 130px;*/
   bottom: 0;
   overflow: hidden;
   .v-enter{
@@ -84,11 +87,11 @@ export default {
     transition: all 500ms ease-in-out;
   }
   .v-enter-to{
-    transform:translateX(0);;
+    transform:translateX(0);
     opacity: 1;
   }
   .v-leave{
-    transform:translateX(0);;
+    transform:translateX(0);
     opacity: 1;
   }
   .v-leave-active{

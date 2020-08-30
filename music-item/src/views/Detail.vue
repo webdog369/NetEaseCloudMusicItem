@@ -30,7 +30,8 @@
     </div>
   </div>
    <h3>歌曲列表</h3>
-  <div class="song-list-item" v-for="(song, i) in songsDetailList" :key="song.id">
+      <div class="song-list">
+       <div class="song-list-item" v-for="(song, i) in songsDetailList" :key="song.id">
     <div class="item-left">
       <div class="num">{{i+1}}</div>
       <div class="song-title">
@@ -38,8 +39,9 @@
         <p class="song-data"><i></i>{{song.ar[0].name}}-{{song.al.name}}</p>
       </div>
     </div>
-    <div class="item-right"></div>
+    <div class="item-right" @click="play"></div>
   </div>
+      </div>
     </div>
   </ScrollView>
 </div>
@@ -48,12 +50,9 @@
 <script>
 import { getPlayList, getPlayListUser, getSongDetail, getAlbumDetail } from '../api'
 import ScrollView from '../components/ScrollView'
-
+import { mapGetters, mapActions } from 'vuex'
 export default {
   name: 'Detail',
-  components: {
-    ScrollView
-  },
   created () {
     // 判断歌单类型 请求不同的数据
     if (this.$route.query.type === '推荐歌单') {
@@ -79,7 +78,13 @@ export default {
       })
     }
   },
+  components: {
+    ScrollView
+  },
   computed: {
+    ...mapGetters([
+      'MiniPlayer'
+    ]),
     // 处理歌单播放
     playCount () {
       return (this.playList.playCount / 10000).toFixed(1) + '万'
@@ -130,8 +135,14 @@ export default {
     }
   },
   methods: {
+    ...mapActions([
+      'toggleLarge'
+    ]),
     backPage () {
       window.history.back()
+    },
+    play () {
+      this.$store.dispatch('toggleLarge', true)
     }
   }
 }
@@ -297,74 +308,77 @@ export default {
     padding-left: 20px;
     font-size: 25px;
   }
-  .song-list-item{
-    width: 100%;
-    height: 100px;
-    /*background: yellowgreen;*/
-    border-bottom: 1px solid #ccc;
-    padding: 5px 0 5px 0;
-    @include bg_sub_color;
-    display: flex;
-    justify-content: space-between;
-    overflow: hidden;
-    .item-left{
-      width: 80%;
-      height: 100%;
-      /*background: tomato;*/
-      padding-left: 10px;
-      .num{
-        display: inline-block;
-        width: 10%;
-        height: 100%;
-        line-height: 100px;
-        text-align: center;
-        color: #666;
-        float: left;
-        &:after{
-          content: "";
-          height: 100%;
-          clear: both;
-        }
-      }
-      .song-title{
+  .song-list{
+    padding-bottom: 130px;
+    .song-list-item{
+      width: 100%;
+      height: 100px;
+      /*background: yellowgreen;*/
+      border-bottom: 1px solid #ccc;
+      padding: 5px 0 5px 0;
+      @include bg_sub_color;
+      display: flex;
+      justify-content: space-between;
+      overflow: hidden;
+      .item-left{
         width: 80%;
         height: 100%;
-        display: inline-block;
-        p:nth-child(1){
-          width: 100%;
-          height: 50%;
-          line-height: 50px;
-          @include font_size($font_large);
-          @include font_color_songName();
-          @include no-wrap();
-          @include clamp(1);
+        /*background: tomato;*/
+        padding-left: 10px;
+        .num{
+          display: inline-block;
+          width: 10%;
+          height: 100%;
+          line-height: 100px;
+          text-align: center;
+          color: #666;
+          float: left;
+          &:after{
+            content: "";
+            height: 100%;
+            clear: both;
+          }
         }
-        p:nth-child(2){
+        .song-title{
           width: 80%;
-          height: 50%;
-          line-height: 50px;
-          @include font_size($font_samll);
-          @include font_color;
-          @include no-wrap();
-          @include clamp(1);
+          height: 100%;
+          display: inline-block;
+          p:nth-child(1){
+            width: 100%;
+            height: 50%;
+            line-height: 50px;
+            @include font_size($font_medium);
+            @include font_color_songName();
+            @include no-wrap();
+            @include clamp(1);
+          }
+          p:nth-child(2){
+            width: 80%;
+            height: 50%;
+            line-height: 50px;
+            @include font_size($font_samll);
+            @include font_color;
+            @include no-wrap();
+            @include clamp(1);
+          }
         }
       }
-    }
-    .item-right{
-      width: 100px;
-      height: 100px;
-      background-image: url("../assets/images/small_play_qq@2x.png");
-      background-repeat: no-repeat;
-      background-size:80px 80px;
-      background-position: center center;
-      &:after{
-        content: '';
-        display: block;
-        width: 84px;
-        height: 84px;
-        background: rgba(255,255,255,.8);
-        margin: 8px auto;
-        border-radius: 50%;
+      .item-right{
+        width: 100px;
+        height: 100px;
+        background-image: url("../assets/images/small_play_qq@2x.png");
+        background-repeat: no-repeat;
+        background-size:80px 80px;
+        background-position: center center;
+        &:after{
+          content: '';
+          display: block;
+          width: 84px;
+          height: 84px;
+          background: rgba(255,255,255,.8);
+          margin: 8px auto;
+          border-radius: 50%;
+        }
       }
     }
   }

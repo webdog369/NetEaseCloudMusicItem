@@ -4,7 +4,7 @@
     <Tabbar></Tabbar>
     <router-view></router-view>
       <transition>
-       <Player v-show="!minPlayer" @toggleMin=toggleMin></Player>
+       <Player></Player>
       </transition>
   </div>
 </template>
@@ -18,16 +18,6 @@ export default {
     Header,
     Tabbar,
     Player
-  },
-  data () {
-    return {
-      minPlayer: false
-    }
-  },
-  methods: {
-    toggleMin () {
-      this.minPlayer = true
-    }
   }
 }
 </script>

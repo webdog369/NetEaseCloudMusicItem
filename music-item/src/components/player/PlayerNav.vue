@@ -4,16 +4,22 @@
         <p>月亮鲸鱼</p>
         <p>房东的猫-/陆宇鹏</p>
       </div>
-      <div class="min-player-btn" @click="toggleMin"></div>
+      <div class="min-player-btn" @click.stop="ShowMini"></div>
     </div>
 </template>
 
 <script>
+import { mapActions } from 'vuex'
 export default {
   name: 'PlayerNav',
   methods: {
-    toggleMin () {
-      this.$emit('toggleMin')
+    ...mapActions([
+      'toggleLarge',
+      'toggleMini'
+    ]),
+    ShowMini () {
+      this.toggleLarge(false)
+      this.toggleMini(true)
     }
   }
 }

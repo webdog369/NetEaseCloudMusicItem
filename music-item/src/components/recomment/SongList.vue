@@ -1,20 +1,23 @@
 <template>
-    <div class="song-list">
+    <div :class="['song-list',MiniPlayer?'change-margin-bottom':'']">
       <div class="song-list-top">
         <span></span>
         <h3>最新音乐</h3>
       </div>
-      <div class="song-list-item"  v-for="value in songsData" :key="value.id">
-      <div class="item-left">
-        <p class="song-name">{{value.name}}</p>
-        <p class="song-data"><i></i>{{value.song.artists[0].name}}-{{value.song.album.name}}</p>
-      </div>
-      <div class="item-right"></div>
+      <div class="items">
+        <div class="song-list-item" v-for="value in songsData" :key="value.id">
+         <div class="item-left">
+          <p class="song-name">{{value.name}}</p>
+          <p class="song-data"><i></i>{{value.song.artists[0].name}}-{{value.song.album.name}}</p>
+         </div>
+         <div class="item-right" @click.stop="play"></div>
+        </div>
       </div>
     </div>
 </template>
 
 <script>
+import { mapGetters, mapActions } from 'vuex'
 export default {
   name: 'SongList',
   props: {
@@ -23,6 +26,19 @@ export default {
       default: () => [],
       required: true
     }
+  },
+  methods: {
+    ...mapActions([
+      'toggleLarge'
+    ]),
+    play () {
+      this.toggleLarge(true)
+    }
+  },
+  computed: {
+    ...mapGetters([
+      'MiniPlayer'
+    ])
   }
 }
 </script>
@@ -32,6 +48,7 @@ export default {
   @import "../../assets/css/variable";
 .song-list{
   margin-top: 20px;
+  padding-bottom: 130px;
   @include bg_sub_color();
   .song-list-top{
     width: 100%;
@@ -56,57 +73,63 @@ export default {
       margin-left: 10px;
     }
   }
-  .song-list-item{
-    width: 100%;
-    height: 100px;
-    /*background: yellowgreen;*/
-    border-bottom: 1px solid #ccc;
-    padding: 5px 0 5px 0;
-    @include bg_sub_color;
-    display: flex;
-    justify-content: space-between;
-    .item-left{
-      width: 80%;
-      height: 100%;
-      /*background: tomato;*/
-      padding-left: 10px;
-      p:nth-child(1){
-        height: 50%;
-        line-height: 50px;
-        @include font_size($font_medium);
-        @include font_color_songName();
-        @include no-wrap();
-        @include clamp(1);
-      }
-      p:nth-child(2){
-        height: 50%;
-        line-height: 50px;
-        @include font_size($font_samll);
-        @include font_color;
-        @include no-wrap();
-        @include clamp(1);
-        i{
-          display: inline-block;
-          width: 33px;
-          height: 23px;
-          /*background-color: #000;*/
-          background-image: url("../../assets/images/index_icon_2x.png");
-          background-repeat: no-repeat;
-          background-size:450px;
-          background-position:0 0;
-          margin-right: 10px;
-          vertical-align:middle;
+  .items{
+    padding-bottom: 130px;
+    .song-list-item{
+      width: 100%;
+      height: 100px;
+      /*background: yellowgreen;*/
+      border-bottom: 1px solid #ccc;
+      padding: 5px 0 5px 0;
+      @include bg_sub_color;
+      display: flex;
+      justify-content: space-between;
+      .item-left{
+        width: 80%;
+        height: 100%;
+        /*background: tomato;*/
+        padding-left: 10px;
+        p:nth-child(1){
+          height: 50%;
+          line-height: 50px;
+          @include font_size($font_medium);
+          @include font_color_songName();
+          @include no-wrap();
+          @include clamp(1);
+        }
+        p:nth-child(2){
+          height: 50%;
+          line-height: 50px;
+          @include font_size($font_samll);
+          @include font_color;
+          @include no-wrap();
+          @include clamp(1);
+          i{
+            display: inline-block;
+            width: 33px;
+            height: 23px;
+            /*background-color: #000;*/
+            background-image: url("../../assets/images/index_icon_2x.png");
+            background-repeat: no-repeat;
+            background-size:450px;
+            background-position:0 0;
+            margin-right: 10px;
+            vertical-align:middle;
+          }
         }
       }
-    }
-    .item-right{
-      width: 100px;
-      height: 100px;
-      background-image: url("../../assets/images/index_icon_2x.png");
-      background-repeat: no-repeat;
-      background-size:520px;
-      background-position: -60px 15px;
+      .item-right{
+        width: 100px;
+        height: 100px;
+        background-image: url("../../assets/images/index_icon_2x.png");
+        background-repeat: no-repeat;
+        background-size:520px;
+        background-position: -60px 15px;
+      }
     }
   }
+}
+.change-margin-bottom{
+    padding-bottom: 130px;
 }
 </style>
