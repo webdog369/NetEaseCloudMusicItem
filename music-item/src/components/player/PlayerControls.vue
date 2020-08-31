@@ -10,18 +10,58 @@
         <span>00:00</span>
       </div>
       <div class="play-btns">
-        <div class="mode"></div>
+        <div class="mode" @click="mode" ref="modeBtn"></div>
         <div class="pre"></div>
-        <div class="play"></div>
+        <div
+          :class="['play', this.isPlaying?'Large-playing':'']"
+          @click.stop="play"
+        ></div>
         <div class="next"></div>
-        <div class="favorite"></div>
+        <div :class="['favorite',favorite?'active':'']" @click="favoriteIt"></div>
       </div>
     </div>
 </template>
 
 <script>
+import { mapActions, mapGetters } from 'vuex'
+
 export default {
-  name: 'PlayerControls'
+  name: 'PlayerControls',
+  computed: {
+    ...mapGetters([
+      'isPlaying',
+      'playMode',
+      'favorite'
+    ])
+  },
+  watch: {
+    playMode () {
+      if (this.playMode === 0) {
+        this.$refs.modeBtn.classList.replace('mode2', 'mode0')
+      } else if (this.playMode === 1) {
+        this.$refs.modeBtn.classList.add('mode1')
+      } else if (this.playMode === 2) {
+        this.$refs.modeBtn.classList.replace('mode1', 'mode2')
+      }
+    }
+  },
+  methods: {
+    ...mapActions([
+      'togglePlayStatus',
+      'togglePlayMode',
+      'toggleFavoriteStatus'
+    ]),
+    play () {
+      this.togglePlayStatus(!this.isPlaying)
+    },
+    mode () {
+      this.togglePlayMode()
+      console.log(this.playMode)
+    },
+    favoriteIt () {
+      this.toggleFavoriteStatus(!this.favorite)
+    }
+  }
 }
 </script>
 
@@ -89,7 +129,16 @@ export default {
       /*background: grey;*/
     }
     .mode{
-      @include bg_img('../../assets/images/loop')
+      @include bg_img('../../assets/images/loop');
+      &.mode0{
+        @include bg_img('../../assets/images/loop');
+      }
+      &.mode1{
+        @include bg_img('../../assets/images/one');
+      }
+      &.mode2{
+        @include bg_img('../../assets/images/shuffle');
+      }
     }
     .pre{
       @include bg_img('../../assets/images/prev')
@@ -97,11 +146,18 @@ export default {
     .play{
       @include bg_img('../../assets/images/play')
     }
+    // 播放状态
+    & .Large-playing{
+      @include bg_img('../../assets/images/pause')
+    }
     .next{
       @include bg_img('../../assets/images/next')
     }
     .favorite{
-      @include bg_img('../../assets/images/un_favorite')
+      @include bg_img('../../assets/images/un_favorite');
+      &.active{
+        @include bg_img('../../assets/images/favorite');
+      }
     }
   }
 }

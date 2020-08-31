@@ -7,14 +7,14 @@
     <div>
       <div class="mini-player">
         <div class="song-msg">
-          <img @click="ShowLarge" src="http://p2.music.126.net/cWt6z6bhPPmQKd-qOzThnA==/109951165252977844.jpg?imageView&thumbnail=360y360&quality=75&tostatic=0" alt="">
+          <img :class="[this.isPlaying?'active':'']" @click="ShowLarge" src="http://p2.music.126.net/cWt6z6bhPPmQKd-qOzThnA==/109951165252977844.jpg?imageView&thumbnail=360y360&quality=75&tostatic=0" alt="">
           <div class="song-name">
             <p>月亮鲸鱼</p>
             <p>房东的猫</p>
           </div>
         </div>
         <div class="other-btn">
-          <div class="play-btn"></div>
+          <div :class="['play-btn',this.isPlaying?'mini-playing':'']" @click.stop="play"></div>
           <div class="list-btn" @click.stop="showList"></div>
         </div>
       </div>
@@ -23,15 +23,21 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
 import Velocity from 'velocity-animate'
 import 'velocity-animate/velocity.ui'
 export default {
   name: 'MiniPlayer',
+  computed: {
+    ...mapGetters([
+      'isPlaying'
+    ])
+  },
   methods: {
     ...mapActions([
       'toggleLarge',
-      'toggleMini'
+      'toggleMini',
+      'togglePlayStatus'
     ]),
     ShowLarge () {
       this.toggleMini(false)
@@ -39,6 +45,9 @@ export default {
     },
     showList () {
       this.$emit('showList')
+    },
+    play () {
+      this.togglePlayStatus(!this.isPlaying)
     },
     enter (el, done) {
       Velocity(el, 'transition.bounceUpIn', { duration: 300 }, function () {
@@ -74,13 +83,19 @@ export default {
     display: flex;
     justify-content: space-around;
     align-items: center;
-    img{
+    img {
       width: 100px;
       height: 100px;
       border-radius: 50%;
       border: 2px solid #eee;
       box-sizing: border-box;
+      animation: cd 10s linear infinite;
+      animation-play-state: paused;
+      &.active{
+        animation-play-state:running;
+      }
     }
+
     .song-name{
       color: #fff;
       font-size:25px;
@@ -102,6 +117,10 @@ export default {
       height: 80px;
       @include bg_img('../../assets/images/play');
     }
+    // 播放状态
+    & .mini-playing{
+      @include bg_img('../../assets/images/pause')
+    }
     .list-btn{
       width: 120px;
       height: 120px;
@@ -109,4 +128,13 @@ export default {
     }
   }
 }
+  @keyframes cd {
+    from{
+      transform:rotate(0);
+    }
+    to{
+      transform:rotate(360deg);
+    }
+
+  }
 </style>

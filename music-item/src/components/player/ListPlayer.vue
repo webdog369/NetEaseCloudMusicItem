@@ -7,16 +7,16 @@
     <div class="list-player">
       <div class="mode">
       <div class="change-mode">
-        <div class="mode-btn"></div>
-        <span>列表循环</span>
+        <div class="mode-btn" @click="mode" ref="modeBtn"></div>
+        <span ref="modeName">列表循环</span>
       </div>
         <div class="close-list"  @click.stop="hiddenList"></div>
       </div>
       <div class="items">
         <div
-          class="song-list" v-for="(v,i) in songList" :key="i">
+          class="song-list" v-for="(v,i) in songList" :key="i" :id="i">
           <div class="song-name">
-            <div class="play"  @click.stop="play"></div>
+            <div class="play" @click.stop="play" :id="i"></div>
             <h3>{{v}}</h3>
           </div>
           <div class="song-btns">
@@ -30,7 +30,7 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
 import Velocity from 'velocity-animate'
 import 'velocity-animate/velocity.ui'
 export default {
@@ -40,17 +40,47 @@ export default {
       songList: ['月亮鲸鱼', '月亮鲸鱼', '月亮鲸鱼', '月亮鲸鱼', '月亮鲸鱼', '月亮鲸鱼', '月亮鲸鱼', '月亮鲸鱼']
     }
   },
+  watch: {
+    playMode () {
+      if (this.playMode === 0) {
+        this.$refs.modeBtn.classList.replace('mode2', 'mode0')
+        this.$refs.modeName.innerHTML = '列表循环'
+      } else if (this.playMode === 1) {
+        this.$refs.modeBtn.classList.add('mode1')
+        this.$refs.modeName.innerHTML = '单曲循环'
+      } else if (this.playMode === 2) {
+        this.$refs.modeBtn.classList.replace('mode1', 'mode2')
+        this.$refs.modeName.innerHTML = '随机播放'
+      }
+    }
+  },
+  computed: {
+    ...mapGetters([
+      'isPlaying',
+      'playMode'
+    ])
+  },
   methods: {
     ...mapActions([
       'toggleLarge',
-      'toggleMini'
+      'toggleMini',
+      'togglePlayStatus',
+      'togglePlayMode'
     ]),
     hiddenList () {
       this.$emit('hiddenList')
     },
-    play () {
+    play (el) {
       this.toggleLarge(true)
       this.toggleMini(false)
+      this.togglePlayStatus(true)
+      // el.target.classList.add('active')
+      // el.target.id
+      console.log(el)
+    },
+    mode () {
+      this.togglePlayMode()
+      console.log(this.playMode)
     },
     enter (el, done) {
       Velocity(el, 'transition.perspectiveUpIn', { duration: 500 }, function () {
@@ -97,7 +127,16 @@ export default {
       .mode-btn{
         width: 50px;
         height: 50px;
-        @include bg_img('../../assets/images/small_loop')
+        @include bg_img('../../assets/images/small_loop');
+        &.mode0{
+          @include bg_img('../../assets/images/small_loop');
+        }
+        &.mode1{
+          @include bg_img('../../assets/images/small_one');
+        }
+        &.mode2{
+          @include bg_img('../../assets/images/small_shuffle');
+        }
       }
       span{
         font-size: 28px;
@@ -134,7 +173,10 @@ export default {
         .play{
           width: 60px;
           height: 60px;
-          @include bg_img('../../assets/images/small_play')
+          @include bg_img('../../assets/images/small_play');
+          &.active{
+            @include bg_img('../../assets/images/small_pause');
+          }
         }
         h3{
           font-size: 28px;

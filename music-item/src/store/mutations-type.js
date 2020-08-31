@@ -5,3 +5,6 @@
 
 export const CHANGE_LARGE_PLAYER = 'changeLagerPlayer'
 export const CHANGE_MINI_PLAYER = 'changeMiniPlayer'
+export const CHANGE_PLAY_STATUS = 'changePlayStatus'
+export const CHANGE_PLAY_MODE = 'changePlayMode'
+export const CHANGE_FAVORITE_STATUS = 'changeFavoriteStatus'

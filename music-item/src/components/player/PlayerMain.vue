@@ -3,7 +3,7 @@
       <swiper class="swiper" :options="swiperOptions">
         <swiper-slide>
           <div class="content">
-            <div class="cd">
+            <div :class="['cd',this.isPlaying?'active':'']">
               <img src="http://p2.music.126.net/cWt6z6bhPPmQKd-qOzThnA==/109951165252977844.jpg?imageView&thumbnail=360y360&quality=75&tostatic=0" alt="">
             </div>
             <div class="min-lyric">
@@ -66,6 +66,7 @@
 <script>
 import { Swiper, SwiperSlide } from 'vue-awesome-swiper'
 import 'swiper/css/swiper.css'
+import { mapGetters } from 'vuex'
 export default {
   name: 'PlayerMain',
   components: {
@@ -84,6 +85,11 @@ export default {
         observeSlideChildren: true
       }
     }
+  },
+  computed: {
+    ...mapGetters([
+      'isPlaying'
+    ])
   }
 }
 </script>
@@ -115,6 +121,10 @@ export default {
         border-radius: 50%;
         box-sizing: border-box;
         animation: cd 20s linear infinite;
+        animation-play-state: paused;
+        &.active{
+          animation-play-state:running;
+        }
         img{
           position: absolute;
           left: 50%;

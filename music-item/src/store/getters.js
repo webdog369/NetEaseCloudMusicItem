@@ -4,5 +4,14 @@ export default {
   },
   MiniPlayer (state) {
     return state.MiniPlayer
+  },
+  isPlaying (state) {
+    return state.isPlaying
+  },
+  playMode (state) {
+    return state.playMode
+  },
+  favorite (state) {
+    return state.favorite
   }
 }
