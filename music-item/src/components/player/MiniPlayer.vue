@@ -1,21 +1,31 @@
 <template>
-    <div class="mini-player">
-      <div class="song-msg">
-        <img @click="ShowLarge" src="http://p2.music.126.net/cWt6z6bhPPmQKd-qOzThnA==/109951165252977844.jpg?imageView&thumbnail=360y360&quality=75&tostatic=0" alt="">
-        <div class="song-name">
-          <p>月亮鲸鱼</p>
-          <p>房东的猫</p>
+  <transition
+    :css="false"
+    @enter="enter"
+    @leave="leave"
+  >
+    <div>
+      <div class="mini-player">
+        <div class="song-msg">
+          <img @click="ShowLarge" src="http://p2.music.126.net/cWt6z6bhPPmQKd-qOzThnA==/109951165252977844.jpg?imageView&thumbnail=360y360&quality=75&tostatic=0" alt="">
+          <div class="song-name">
+            <p>月亮鲸鱼</p>
+            <p>房东的猫</p>
+          </div>
+        </div>
+        <div class="other-btn">
+          <div class="play-btn"></div>
+          <div class="list-btn" @click.stop="showList"></div>
         </div>
       </div>
-      <div class="other-btn">
-        <div class="play-btn"></div>
-        <div class="list-btn" @click.stop="showList"></div>
-      </div>
     </div>
+  </transition>
 </template>
 
 <script>
 import { mapActions } from 'vuex'
+import Velocity from 'velocity-animate'
+import 'velocity-animate/velocity.ui'
 export default {
   name: 'MiniPlayer',
   methods: {
@@ -29,6 +39,16 @@ export default {
     },
     showList () {
       this.$emit('showList')
+    },
+    enter (el, done) {
+      Velocity(el, 'transition.bounceUpIn', { duration: 300 }, function () {
+        done()
+      })
+    },
+    leave (el, done) {
+      Velocity(el, 'transition.bounceDownOut', { duration: 300 }, function () {
+        done()
+      })
     }
   }
 }

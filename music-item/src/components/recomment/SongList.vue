@@ -1,5 +1,6 @@
 <template>
-    <div :class="['song-list',MiniPlayer?'change-margin-bottom':'']">
+  <transition>
+    <div :class="['song-list',MiniPlayer?'change-padding-bottom':'']">
       <div class="song-list-top">
         <span></span>
         <h3>最新音乐</h3>
@@ -14,6 +15,7 @@
         </div>
       </div>
     </div>
+  </transition>
 </template>
 
 <script>
@@ -29,10 +31,12 @@ export default {
   },
   methods: {
     ...mapActions([
-      'toggleLarge'
+      'toggleLarge',
+      'toggleMini'
     ]),
     play () {
       this.toggleLarge(true)
+      this.toggleMini(false)
     }
   },
   computed: {
@@ -48,7 +52,6 @@ export default {
   @import "../../assets/css/variable";
 .song-list{
   margin-top: 20px;
-  padding-bottom: 130px;
   @include bg_sub_color();
   .song-list-top{
     width: 100%;
@@ -74,7 +77,6 @@ export default {
     }
   }
   .items{
-    padding-bottom: 130px;
     .song-list-item{
       width: 100%;
       height: 100px;
@@ -129,7 +131,7 @@ export default {
     }
   }
 }
-.change-margin-bottom{
+.change-padding-bottom{
     padding-bottom: 130px;
 }
 </style>

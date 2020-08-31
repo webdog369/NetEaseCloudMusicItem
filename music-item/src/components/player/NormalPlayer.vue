@@ -1,16 +1,24 @@
 <template>
-    <div class="normal-player">
+  <transition
+  :css="false"
+  @enter="enter"
+  @leave="leave"
+  >
+    <div class="normal-player" ref="normal">
       <div class="bg"></div>
        <PlayerNav></PlayerNav>
       <PlayerMain></PlayerMain>
       <player-controls></player-controls>
     </div>
+  </transition>
 </template>
 
 <script>
 import PlayerNav from './PlayerNav'
 import PlayerMain from './PlayerMain'
 import PlayerControls from './PlayerControls'
+import Velocity from 'velocity-animate'
+import 'velocity-animate/velocity.ui'
 export default {
   name: 'NormalPlayer',
   components: {
@@ -19,6 +27,16 @@ export default {
     PlayerControls
   },
   methods: {
+    enter (el, done) {
+      Velocity(el, 'transition.shrinkIn', { duration: 300 }, function () {
+        done()
+      })
+    },
+    leave (el, done) {
+      Velocity(el, 'transition.shrinkOut', { duration: 300 }, function () {
+        done()
+      })
+    }
   }
 }
 </script>

@@ -1,4 +1,9 @@
 <template>
+  <transition
+    :css="false"
+    @enter="enter"
+    @leave="leave"
+  >
     <div class="list-player">
       <div class="mode">
       <div class="change-mode">
@@ -8,70 +13,11 @@
         <div class="close-list"  @click.stop="hiddenList"></div>
       </div>
       <div class="items">
-        <div class="song-list">
+        <div
+          class="song-list" v-for="(v,i) in songList" :key="i">
           <div class="song-name">
-            <div class="play"></div>
-            <h3>月亮鲸鱼</h3>
-          </div>
-          <div class="song-btns">
-            <div class="favorite"></div>
-            <div class="del"></div>
-          </div>
-        </div>
-        <div class="song-list">
-          <div class="song-name">
-            <div class="play"></div>
-            <h3>月亮鲸鱼</h3>
-          </div>
-          <div class="song-btns">
-            <div class="favorite"></div>
-            <div class="del"></div>
-          </div>
-        </div>
-        <div class="song-list">
-          <div class="song-name">
-            <div class="play"></div>
-            <h3>月亮鲸鱼</h3>
-          </div>
-          <div class="song-btns">
-            <div class="favorite"></div>
-            <div class="del"></div>
-          </div>
-        </div>
-        <div class="song-list">
-          <div class="song-name">
-            <div class="play"></div>
-            <h3>月亮鲸鱼</h3>
-          </div>
-          <div class="song-btns">
-            <div class="favorite"></div>
-            <div class="del"></div>
-          </div>
-        </div>
-        <div class="song-list">
-          <div class="song-name">
-            <div class="play"></div>
-            <h3>月亮鲸鱼</h3>
-          </div>
-          <div class="song-btns">
-            <div class="favorite"></div>
-            <div class="del"></div>
-          </div>
-        </div>
-        <div class="song-list">
-          <div class="song-name">
-            <div class="play"></div>
-            <h3>月亮鲸鱼</h3>
-          </div>
-          <div class="song-btns">
-            <div class="favorite"></div>
-            <div class="del"></div>
-          </div>
-        </div>
-        <div class="song-list">
-          <div class="song-name">
-            <div class="play"></div>
-            <h3>月亮鲸鱼</h3>
+            <div class="play"  @click.stop="play"></div>
+            <h3>{{v}}</h3>
           </div>
           <div class="song-btns">
             <div class="favorite"></div>
@@ -80,18 +26,41 @@
         </div>
       </div>
     </div>
+  </transition>
 </template>
 
 <script>
+import { mapActions } from 'vuex'
+import Velocity from 'velocity-animate'
+import 'velocity-animate/velocity.ui'
 export default {
   name: 'ListPlayer',
   data () {
     return {
+      songList: ['月亮鲸鱼', '月亮鲸鱼', '月亮鲸鱼', '月亮鲸鱼', '月亮鲸鱼', '月亮鲸鱼', '月亮鲸鱼', '月亮鲸鱼']
     }
   },
   methods: {
+    ...mapActions([
+      'toggleLarge',
+      'toggleMini'
+    ]),
     hiddenList () {
       this.$emit('hiddenList')
+    },
+    play () {
+      this.toggleLarge(true)
+      this.toggleMini(false)
+    },
+    enter (el, done) {
+      Velocity(el, 'transition.perspectiveUpIn', { duration: 500 }, function () {
+        done()
+      })
+    },
+    leave (el, done) {
+      Velocity(el, 'transition.perspectiveUpOut', { duration: 500 }, function () {
+        done()
+      })
     }
   }
 }

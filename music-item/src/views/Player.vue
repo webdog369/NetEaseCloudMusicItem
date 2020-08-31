@@ -1,19 +1,13 @@
 <template>
     <div class="player" ref="player">
       <div class="bg" ref="bg"></div>
-      <transition>
-      <NormalPlayer
-        ref="normal" v-show="this.LargePlayer" class="animate__animated animate__bounceInDown"></NormalPlayer>
-      </transition>
-      <transition>
+      <NormalPlayer ref="normal" v-show="LargePlayer"></NormalPlayer>
       <MiniPlayer
-        v-show="this.MiniPlayer"
+        v-show="MiniPlayer"
         @showList="showList"
-      class="animate__animated animate__bounceInUp"
       ></MiniPlayer>
-      </transition>
       <ListPlayer
-        v-show="hidden"
+        v-show="hidden && MiniPlayer"
         @hiddenList="hiddenList"
       ></ListPlayer>
     </div>

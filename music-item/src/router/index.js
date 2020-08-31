@@ -8,11 +8,26 @@ import VueRouter from 'vue-router'
 // import Search from '../views/Search'
 
 // 导入组件 (按需加载)
-const Recommend = (resolve) => {
-  import('../views/Recommend').then((module) => {
-    resolve(module)
+// const Recommend = (resolve) => {
+//   import('../views/Recommend').then((module) => {
+//     resolve(module)
+//   })
+// }
+const Recommend = () => {
+  return new Promise((resolve, reject) => {
+    import('../views/Recommend').then((data) => {
+      resolve(data)
+    }).catch((err) => {
+      reject(err)
+    })
   })
 }
+
+// (resolve, reject) => {
+//   import('../views/Recommend').then((module) => {
+//     resolve(module)
+//   })
+// }
 const Singer = (resolve) => {
   import('../views/Singer').then((module) => {
     resolve(module)

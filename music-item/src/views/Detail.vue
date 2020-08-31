@@ -1,7 +1,7 @@
 <template>
 <div class="detail">
   <ScrollView>
-    <div>
+    <div :class="['box',MiniPlayer?'ch-pd-btm':'']">
   <div class="header">
     <div class="top" >
       <div class="mask" ref="mask"></div>
@@ -136,13 +136,15 @@ export default {
   },
   methods: {
     ...mapActions([
-      'toggleLarge'
+      'toggleLarge',
+      'toggleMini'
     ]),
     backPage () {
       window.history.back()
     },
     play () {
-      this.$store.dispatch('toggleLarge', true)
+      this.toggleLarge(true)
+      this.toggleMini(false)
     }
   }
 }
@@ -157,230 +159,235 @@ export default {
   top: 0;
   left: 0;
   right: 0;
-  bottom: 0;
+  bottom:0;
   @include bg_sub_color;
   overflow: hidden;
-  .header{
-    width: 100%;
-    /*background: yellowgreen;*/
-    .top{
-      position: relative;
+  .box{
+    /*padding-bottom: 130px;*/
+    .header{
       width: 100%;
-      height: 350px;
-      background: rgba(0,0,0,.4);
-      overflow: hidden;
-      .mask{
-        position: absolute;
-        left: 0;
-        top: 0;
+      /*background: yellowgreen;*/
+      .top{
+        position: relative;
         width: 100%;
-        height: 100%;
-        filter: blur(40px);
-        transform: scale(1.2);
-        background-position:50%;
-        z-index: -1;
-      }
-      p{
-        color: #fff;
-        display: inline-block;
-        position: absolute;
-        left: 320px;
-        top: 40px;
-        font-size: 30px;
-        padding-right: 30px;
-      }
-      .imgs{
-        position: absolute;
-        left: 40px;
-        top: 40px;
-        width: 250px;
-        height: 250px;
-        border: 1px solid #aaa;
+        height: 350px;
+        background: rgba(0,0,0,.4);
         overflow: hidden;
-        img{
+        .mask{
+          position: absolute;
+          left: 0;
+          top: 0;
           width: 100%;
           height: 100%;
+          filter: blur(40px);
+          transform: scale(1.2);
+          background-position:50%;
+          z-index: -1;
         }
-        span{
-          position: absolute;
-          left: -10px;
-          top: 25px;
-          width: 80px;
-          height: 30px;
-          background:rgb(192,54,51);
-          font-size: 22px;
+        p{
           color: #fff;
-          border-radius: 30px;
-          text-align: center;
-        }
-        i{
+          display: inline-block;
           position: absolute;
-          top: 0;
-          right: 0;
-          display: inline-block;
-          height: 30px;
-          width: 120px;
-          color: #fff;
-          font-style: normal;
-          font-size: 22px;
-          text-align: right;
-          background: url("../assets/images/ej.png") no-repeat ;
-          background-size: 30px 30px;
+          left: 320px;
+          top: 40px;
+          font-size: 30px;
+          padding-right: 30px;
         }
-      }
-      .author{
-        position: absolute;
-        left: 320px;
-        top: 150px;
-        width: 100%;
-        height: 80px;
-        /*background: yellowgreen;*/
-        img{
-          width: 60px;
-          height: 60px;
-          border-radius: 50%;
-        }
-        span{
-          line-height: 60px;
-          color: #eee;
-          font-size: 25px;
-          margin-left: 5px;
-        }
-      }
-      .back{
-        position: absolute;
-        bottom: 60px;
-        right: 0;
-        width: 110px;
-        height: 50px;
-        line-height: 50px;
-        text-align: right;
-        color: #eee;
-        border-top-left-radius:20px;
-        border-bottom-left-radius:20px;
-        border: 1px solid #eee;
-        font-size: 25px;
-      }
-    }
-    .bottom{
-      width: 100%;
-      /*height: 230px;*/
-      @include bg_sub_color;
-      /*background: orange;*/
-      padding-left: 15px;
-      overflow: hidden;
-      .tag{
-        width: 100%;
-        height: 70px;
-        border-bottom: 1px solid #ccc;
-        span{
-          margin-right: 15px;
-          font-size: 23px;
-          color: #666;
-          line-height: 70px;
-          &:nth-child(1){
-          font-size: 28px;
-        }
-        }
-      }
-      .description{
-        width: 100%;
-        height: 85px;
-        padding-top: 15px;
-        padding-bottom: 30px;
-        overflow: auto;
-        span{
-         i{
-           font-size: 28px;
-           color: #666;
-           font-style: normal;
-           //@include no-wrap;
-         }
-        }
-      }
-    }
-  }
-  h3{
-    width: 100%;
-    height: 50px;
-    line-height: 50px;
-    background: #eee;
-    padding-left: 20px;
-    font-size: 25px;
-  }
-  .song-list{
-    padding-bottom: 130px;
-    .song-list-item{
-      width: 100%;
-      height: 100px;
-      /*background: yellowgreen;*/
-      border-bottom: 1px solid #ccc;
-      padding: 5px 0 5px 0;
-      @include bg_sub_color;
-      display: flex;
-      justify-content: space-between;
-      overflow: hidden;
-      .item-left{
-        width: 80%;
-        height: 100%;
-        /*background: tomato;*/
-        padding-left: 10px;
-        .num{
-          display: inline-block;
-          width: 10%;
-          height: 100%;
-          line-height: 100px;
-          text-align: center;
-          color: #666;
-          float: left;
-          &:after{
-            content: "";
+        .imgs{
+          position: absolute;
+          left: 40px;
+          top: 40px;
+          width: 250px;
+          height: 250px;
+          border: 1px solid #aaa;
+          overflow: hidden;
+          img{
+            width: 100%;
             height: 100%;
-            clear: both;
+          }
+          span{
+            position: absolute;
+            left: -10px;
+            top: 25px;
+            width: 80px;
+            height: 30px;
+            background:rgb(192,54,51);
+            font-size: 22px;
+            color: #fff;
+            border-radius: 30px;
+            text-align: center;
+          }
+          i{
+            position: absolute;
+            top: 0;
+            right: 0;
+            display: inline-block;
+            height: 30px;
+            width: 120px;
+            color: #fff;
+            font-style: normal;
+            font-size: 22px;
+            text-align: right;
+            background: url("../assets/images/ej.png") no-repeat ;
+            background-size: 30px 30px;
           }
         }
-        .song-title{
+        .author{
+          position: absolute;
+          left: 320px;
+          top: 150px;
+          width: 100%;
+          height: 80px;
+          /*background: yellowgreen;*/
+          img{
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+          }
+          span{
+            line-height: 60px;
+            color: #eee;
+            font-size: 25px;
+            margin-left: 5px;
+          }
+        }
+        .back{
+          position: absolute;
+          bottom: 60px;
+          right: 0;
+          width: 110px;
+          height: 50px;
+          line-height: 50px;
+          text-align: right;
+          color: #eee;
+          border-top-left-radius:20px;
+          border-bottom-left-radius:20px;
+          border: 1px solid #eee;
+          font-size: 25px;
+        }
+      }
+      .bottom{
+        width: 100%;
+        /*height: 230px;*/
+        @include bg_sub_color;
+        /*background: orange;*/
+        padding-left: 15px;
+        overflow: hidden;
+        .tag{
+          width: 100%;
+          height: 70px;
+          border-bottom: 1px solid #ccc;
+          span{
+            margin-right: 15px;
+            font-size: 23px;
+            color: #666;
+            line-height: 70px;
+            &:nth-child(1){
+              font-size: 28px;
+            }
+          }
+        }
+        .description{
+          width: 100%;
+          height: 85px;
+          padding-top: 15px;
+          padding-bottom: 30px;
+          overflow: auto;
+          span{
+            i{
+              font-size: 28px;
+              color: #666;
+              font-style: normal;
+              //@include no-wrap;
+            }
+          }
+        }
+      }
+    }
+    h3{
+      width: 100%;
+      height: 50px;
+      line-height: 50px;
+      background: #eee;
+      padding-left: 20px;
+      font-size: 25px;
+    }
+    .song-list{
+      .song-list-item{
+        width: 100%;
+        height: 100px;
+        /*background: yellowgreen;*/
+        border-bottom: 1px solid #ccc;
+        padding: 5px 0 5px 0;
+        @include bg_sub_color;
+        display: flex;
+        justify-content: space-between;
+        overflow: hidden;
+        .item-left{
           width: 80%;
           height: 100%;
-          display: inline-block;
-          p:nth-child(1){
-            width: 100%;
-            height: 50%;
-            line-height: 50px;
-            @include font_size($font_medium);
-            @include font_color_songName();
-            @include no-wrap();
-            @include clamp(1);
+          /*background: tomato;*/
+          padding-left: 10px;
+          .num{
+            display: inline-block;
+            width: 10%;
+            height: 100%;
+            line-height: 100px;
+            text-align: center;
+            color: #666;
+            float: left;
+            &:after{
+              content: "";
+              height: 100%;
+              clear: both;
+            }
           }
-          p:nth-child(2){
+          .song-title{
             width: 80%;
-            height: 50%;
-            line-height: 50px;
-            @include font_size($font_samll);
-            @include font_color;
-            @include no-wrap();
-            @include clamp(1);
+            height: 100%;
+            display: inline-block;
+            p:nth-child(1){
+              width: 100%;
+              height: 50%;
+              line-height: 50px;
+              @include font_size($font_medium);
+              @include font_color_songName();
+              @include no-wrap();
+              @include clamp(1);
+            }
+            p:nth-child(2){
+              width: 80%;
+              height: 50%;
+              line-height: 50px;
+              @include font_size($font_samll);
+              @include font_color;
+              @include no-wrap();
+              @include clamp(1);
+            }
           }
         }
-      }
-      .item-right{
-        width: 100px;
-        height: 100px;
-        background-image: url("../assets/images/small_play_qq@2x.png");
-        background-repeat: no-repeat;
-        background-size:80px 80px;
-        background-position: center center;
-        &:after{
-          content: '';
-          display: block;
-          width: 84px;
-          height: 84px;
-          background: rgba(255,255,255,.8);
-          margin: 8px auto;
-          border-radius: 50%;
+        .item-right{
+          width: 100px;
+          height: 100px;
+          background-image: url("../assets/images/small_play_qq@2x.png");
+          background-repeat: no-repeat;
+          background-size:80px 80px;
+          background-position: center center;
+          &:after{
+            content: '';
+            display: block;
+            width: 84px;
+            height: 84px;
+            background: rgba(255,255,255,.8);
+            margin: 8px auto;
+            border-radius: 50%;
+          }
         }
       }
     }
+  }
+  & .ch-pd-btm{
+    padding-bottom: 130px !important;
   }
 }
 </style>
