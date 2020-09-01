@@ -3,5 +3,8 @@ export default {
   MiniPlayer: false,
   isPlaying: false,
   playMode: 0,
-  favorite: false
+  favorite: false,
+  songData: [],
+  currentSong: {},
+  currentIndex: 0
 }

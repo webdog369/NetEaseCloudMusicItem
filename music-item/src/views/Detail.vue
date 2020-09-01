@@ -39,7 +39,7 @@
         <p class="song-data"><i></i>{{song.ar[0].name}}-{{song.al.name}}</p>
       </div>
     </div>
-    <div class="item-right" @click="play"></div>
+    <div class="item-right" @click="play(song.id)"></div>
   </div>
       </div>
     </div>
@@ -83,7 +83,8 @@ export default {
   },
   computed: {
     ...mapGetters([
-      'MiniPlayer'
+      'MiniPlayer',
+      'isPlaying'
     ]),
     // 处理歌单播放
     playCount () {
@@ -137,14 +138,18 @@ export default {
   methods: {
     ...mapActions([
       'toggleLarge',
-      'toggleMini'
+      'toggleMini',
+      'changeSongData',
+      'togglePlayStatus'
     ]),
     backPage () {
       window.history.back()
     },
-    play () {
+    play (id) {
       this.toggleLarge(true)
       this.toggleMini(false)
+      this.togglePlayStatus(true)
+      this.changeSongData(id)
     }
   }
 }

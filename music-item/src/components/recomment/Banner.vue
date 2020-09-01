@@ -59,14 +59,15 @@ export default {
 }
 </script>
 <style scoped lang="scss">
-  .banner{
-     .item{
-       img{
-         width: 100%;
-         height: 100%;
-       }
-     }
-  }
+    .banner{
+      overflow:hidden;
+      .item{
+        img{
+          width: 100%;
+          height: 100%;
+        }
+      }
+    }
 </style>
 
 <!--自定义激活状态的样式-->

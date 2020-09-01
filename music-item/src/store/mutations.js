@@ -4,7 +4,8 @@ import {
   CHANGE_MINI_PLAYER,
   CHANGE_PLAY_STATUS,
   CHANGE_PLAY_MODE,
-  CHANGE_FAVORITE_STATUS
+  CHANGE_FAVORITE_STATUS,
+  GET_SONG_DATA
 } from './mutations-type'
 
 export default {
@@ -26,5 +27,8 @@ export default {
   },
   [CHANGE_FAVORITE_STATUS] (state, payload) {
     state.favorite = payload
+  },
+  [GET_SONG_DATA] (state, payload) {
+    state.songData = payload
   }
 }

@@ -3,59 +3,19 @@
       <swiper class="swiper" :options="swiperOptions">
         <swiper-slide>
           <div class="content">
-            <div :class="['cd',this.isPlaying?'active':'']">
-              <img src="http://p2.music.126.net/cWt6z6bhPPmQKd-qOzThnA==/109951165252977844.jpg?imageView&thumbnail=360y360&quality=75&tostatic=0" alt="">
+            <div :class="['cd',isPlaying?'active':'']">
+              <img :src="currentSong.picUrl" alt="">
             </div>
             <div class="min-lyric">
               <ul>
-                <li>我是歌词</li>
-                <li>我是歌词</li>
-                <li>我是歌词</li>
-                <li>我是歌词</li>
-                <li>我是歌词</li>
-                <li>我是歌词</li>
-                <li>我是歌词</li>
+                <li v-for="(value, index) in currentSong.lyric" :key="index">{{value}}>我是歌词</li>
               </ul>
             </div>
           </div>
         </swiper-slide>
         <swiper-slide>
           <ul class="lyric">
-            <li>我是歌词呀呀呀</li>
-            <li>我是歌词呀呀呀</li>
-            <li>我是歌词呀呀呀</li>
-            <li>我是歌词呀呀呀</li>
-            <li>我是歌词呀呀呀</li>
-            <li>我是歌词呀呀呀</li>
-            <li>我是歌词呀呀呀</li>
-            <li>我是歌词呀呀呀</li>
-            <li>我是歌词呀呀呀</li>
-            <li>我是歌词呀呀呀</li>
-            <li>我是歌词呀呀呀</li>
-            <li>我是歌词呀呀呀</li>
-            <li>我是歌词呀呀呀</li>
-            <li>我是歌词呀呀呀</li>
-            <li>我是歌词呀呀呀</li>
-            <li>我是歌词呀呀呀</li>
-            <li>我是歌词呀呀呀</li>
-            <li>我是歌词呀呀呀</li>
-            <li>我是歌词呀呀呀</li>
-            <li>我是歌词呀呀呀</li>
-            <li>我是歌词呀呀呀</li>
-            <li>我是歌词呀呀呀</li>
-            <li>我是歌词呀呀呀</li>
-            <li>我是歌词呀呀呀</li>
-            <li>我是歌词呀呀呀</li>
-            <li>我是歌词呀呀呀</li>
-            <li>我是歌词呀呀呀</li>
-            <li>我是歌词呀呀呀</li>
-            <li>我是歌词呀呀呀</li>
-            <li>我是歌词呀呀呀</li>
-            <li>我是歌词呀呀呀</li>
-            <li>我是歌词呀呀呀</li>
-            <li>我是歌词呀呀呀</li>
-            <li>我是歌词呀呀呀</li>
-            <li>我是歌词呀呀呀</li>
+           <li v-for="(value, index) in currentSong.lyric" :key="index">{{value}}</li>
           </ul>
         </swiper-slide>
         <div class="swiper-pagination" slot="pagination"></div>
@@ -83,12 +43,16 @@ export default {
         observer: true,
         observeParents: true,
         observeSlideChildren: true
-      }
+      },
+      lyric: [],
+      lyricTime: []
     }
   },
   computed: {
     ...mapGetters([
-      'isPlaying'
+      'isPlaying',
+      'songData',
+      'currentSong'
     ])
   }
 }
@@ -114,7 +78,6 @@ export default {
         transform: translateX(-50%);
         width: 600px;
         height: 600px;
-        background-image: url("../../assets/images/disc.png");
         background-position: center;
         background-size: 109%;
         border: 25px solid rgba(255,255,255,.1);
@@ -146,10 +109,11 @@ export default {
         ul{
           width: 100%;
           height: 100%;
-          overflow: hidden;
+          overflow: auto;
           li{
             text-align: center;
             color: #eee;
+            font-size: 30px;
           }
         }
       }
@@ -165,7 +129,7 @@ export default {
           line-height: 50px;
           text-align: center;
           color: #eee;
-          font-size: 26px;
+          font-size: 30px;
         }
 
     }

@@ -1,6 +1,5 @@
 <template>
     <div class="player" ref="player">
-      <div class="bg" ref="bg"></div>
       <NormalPlayer ref="normal" v-show="LargePlayer"></NormalPlayer>
       <MiniPlayer
         v-show="MiniPlayer"
@@ -10,6 +9,7 @@
         v-show="hidden && MiniPlayer"
         @hiddenList="hiddenList"
       ></ListPlayer>
+      <audio :src="currentSong.songUrl" autoplay ref="audio" :loop="loopFlag"></audio>
     </div>
 </template>
 
@@ -25,15 +25,42 @@ export default {
     MiniPlayer,
     ListPlayer
   },
+  mounted () {
+    // setInterval(function () {
+    //   console.log(this.$refs.audio.duration)
+    //   console.log(this.$refs.audio.currentTime)
+    // }, 1000)
+  },
   computed: {
     ...mapGetters([
       'LargePlayer',
-      'MiniPlayer'
+      'MiniPlayer',
+      'currentSong',
+      'isPlaying',
+      'playMode'
     ])
+  },
+  watch: {
+    isPlaying (n, o) {
+      if (n) {
+        this.$refs.audio.play()
+      } else {
+        this.$refs.audio.pause()
+      }
+    },
+    playMode (n, o) {
+      n === 1 ? this.loopFlag = true : this.loopFlag = false
+    },
+    currentSong (n) {
+      if (n.songUrl === null) {
+        console.error('该歌曲暂无播放链接')
+      }
+    }
   },
   data () {
     return {
-      hidden: false
+      hidden: false,
+      loopFlag: false
     }
   },
   methods: {

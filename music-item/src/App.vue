@@ -9,7 +9,14 @@
 <script>
 import Header from './components/Header'
 import Tabbar from './components/Tabbar'
-import Player from './views/Player'
+// import Player from './views/Player'
+const Player = (resolve) => {
+  import('./views/Player').then((data) => {
+    resolve(data)
+  }).catch((err) => {
+    console.error(err)
+  })
+}
 export default {
   name: 'App',
   components: {

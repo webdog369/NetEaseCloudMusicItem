@@ -14,10 +14,10 @@
       </div>
       <div class="items">
         <div
-          class="song-list" v-for="(v,i) in songList" :key="i" :id="i">
+          class="song-list" v-for="v in songLists" :key="v.id" :id="v.id">
           <div class="song-name">
-            <div class="play" @click.stop="play" :id="i"></div>
-            <h3>{{v}}</h3>
+            <div class="play" @click.stop="play(v.id)" :id="v.id"></div>
+            <h3>{{v.name}}</h3>
           </div>
           <div class="song-btns">
             <div class="favorite"></div>
@@ -37,7 +37,7 @@ export default {
   name: 'ListPlayer',
   data () {
     return {
-      songList: ['月亮鲸鱼', '月亮鲸鱼', '月亮鲸鱼', '月亮鲸鱼', '月亮鲸鱼', '月亮鲸鱼', '月亮鲸鱼', '月亮鲸鱼']
+      songList: []
     }
   },
   watch: {
@@ -52,31 +52,53 @@ export default {
         this.$refs.modeBtn.classList.replace('mode1', 'mode2')
         this.$refs.modeName.innerHTML = '随机播放'
       }
+    },
+    currentSong (n, o) {
+      const list = []
+      for (let i = 0; i < sessionStorage.length; i++) {
+        const data = sessionStorage.getItem('song-' + i).split(',')
+        const obj = {
+          name: data[0],
+          singer: data[1],
+          id: data[2]
+        }
+        list.unshift(obj)
+      }
+      // for (let i = 0; i < list.length; i++) {
+      //   if (!this.songList.includes(list[i])) {
+      //     this.songList.push(list[i])
+      //   }
+      // }
     }
   },
   computed: {
     ...mapGetters([
       'isPlaying',
-      'playMode'
-    ])
+      'playMode',
+      'currentSong'
+    ]),
+    songLists () {
+      return Array.from(new Set(this.songList))
+    }
   },
   methods: {
     ...mapActions([
       'toggleLarge',
       'toggleMini',
       'togglePlayStatus',
-      'togglePlayMode'
+      'togglePlayMode',
+      'changeSongData'
     ]),
     hiddenList () {
       this.$emit('hiddenList')
     },
-    play (el) {
+    play (id) {
       this.toggleLarge(true)
       this.toggleMini(false)
       this.togglePlayStatus(true)
+      this.changeSongData([id])
       // el.target.classList.add('active')
       // el.target.id
-      console.log(el)
     },
     mode () {
       this.togglePlayMode()
@@ -179,6 +201,7 @@ export default {
           }
         }
         h3{
+          width: 50%;
           font-size: 28px;
           @include font_color_songName;
         }

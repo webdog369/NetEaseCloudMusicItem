@@ -13,7 +13,7 @@
         <div class="mode" @click="mode" ref="modeBtn"></div>
         <div class="pre"></div>
         <div
-          :class="['play', this.isPlaying?'Large-playing':'']"
+          :class="['play',isPlaying?'Large-playing':'']"
           @click.stop="play"
         ></div>
         <div class="next"></div>
@@ -56,7 +56,6 @@ export default {
     },
     mode () {
       this.togglePlayMode()
-      console.log(this.playMode)
     },
     favoriteIt () {
       this.toggleFavoriteStatus(!this.favorite)
@@ -75,6 +74,9 @@ export default {
   width: 100%;
   height: 13%;
   /*background: orange;*/
+  // 解决swiper组件导致字体闪烁问题
+  transform: translate3d(0,0,0);
+  overflow: hidden;
   .progress-bar{
     width: 80%;
     height: 30px;

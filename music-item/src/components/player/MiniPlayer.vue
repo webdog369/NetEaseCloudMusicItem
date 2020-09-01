@@ -7,14 +7,14 @@
     <div>
       <div class="mini-player">
         <div class="song-msg">
-          <img :class="[this.isPlaying?'active':'']" @click="ShowLarge" src="http://p2.music.126.net/cWt6z6bhPPmQKd-qOzThnA==/109951165252977844.jpg?imageView&thumbnail=360y360&quality=75&tostatic=0" alt="">
+          <img :class="[isPlaying?'active':'']" @click="ShowLarge" v-lazy="currentSong.picUrl" alt="">
           <div class="song-name">
-            <p>月亮鲸鱼</p>
-            <p>房东的猫</p>
+            <p>{{currentSong.name}}</p>
+            <p>{{currentSong.singer}}</p>
           </div>
         </div>
         <div class="other-btn">
-          <div :class="['play-btn',this.isPlaying?'mini-playing':'']" @click.stop="play"></div>
+          <div :class="['play-btn',isPlaying?'mini-playing':'']" @click.stop="play"></div>
           <div class="list-btn" @click.stop="showList"></div>
         </div>
       </div>
@@ -30,7 +30,8 @@ export default {
   name: 'MiniPlayer',
   computed: {
     ...mapGetters([
-      'isPlaying'
+      'isPlaying',
+      'currentSong'
     ])
   },
   methods: {
@@ -78,7 +79,7 @@ export default {
   justify-content:space-between;
   z-index: 9;
   .song-msg{
-    width: 240px;
+    width: 350px;
     height: 100%;
     display: flex;
     justify-content: space-around;
@@ -97,9 +98,13 @@ export default {
     }
 
     .song-name{
+      width: 200px;
+      height: 50%;
       color: #fff;
       font-size:25px;
-      text-align: center;
+      p{
+       @include no-wrap;
+      }
       p:nth-child(2){
         margin-top: 5px;
         font-size:23px;

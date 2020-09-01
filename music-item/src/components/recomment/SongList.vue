@@ -11,7 +11,7 @@
           <p class="song-name">{{value.name}}</p>
           <p class="song-data"><i></i>{{value.song.artists[0].name}}-{{value.song.album.name}}</p>
          </div>
-         <div class="item-right" @click.stop="play"></div>
+         <div class="item-right" @click.stop="play(value.id)" ></div>
         </div>
       </div>
     </div>
@@ -20,6 +20,7 @@
 
 <script>
 import { mapGetters, mapActions } from 'vuex'
+
 export default {
   name: 'SongList',
   props: {
@@ -32,17 +33,29 @@ export default {
   methods: {
     ...mapActions([
       'toggleLarge',
-      'toggleMini'
+      'toggleMini',
+      'changeSongData',
+      'togglePlayStatus'
     ]),
-    play () {
+    play (id) {
       this.toggleLarge(true)
       this.toggleMini(false)
+      this.togglePlayStatus(true)
+      this.changeSongData([id])
     }
   },
   computed: {
     ...mapGetters([
-      'MiniPlayer'
+      'MiniPlayer',
+      'songData',
+      'currentSong'
     ])
+  },
+  watch: {
+    currentSong (n, o) {
+      const i = sessionStorage.length
+      sessionStorage.setItem('song-' + i, `${n.name},${n.singer},${n.id}`)
+    }
   }
 }
 </script>
