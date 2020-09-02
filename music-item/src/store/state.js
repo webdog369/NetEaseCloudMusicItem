@@ -6,5 +6,6 @@ export default {
   favorite: false,
   songData: [],
   currentSong: {},
-  currentIndex: 0
+  currentIndex: 0,
+  Tips: ['', false]
 }

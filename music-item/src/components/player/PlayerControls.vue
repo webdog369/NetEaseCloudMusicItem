@@ -11,12 +11,12 @@
       </div>
       <div class="play-btns">
         <div class="mode" @click="mode" ref="modeBtn"></div>
-        <div class="pre"></div>
+        <div class="pre" @click.stop="pre"></div>
         <div
           :class="['play',isPlaying?'Large-playing':'']"
           @click.stop="play"
         ></div>
-        <div class="next"></div>
+        <div class="next" @click.stop="next"></div>
         <div :class="['favorite',favorite?'active':'']" @click="favoriteIt"></div>
       </div>
     </div>
@@ -31,7 +31,10 @@ export default {
     ...mapGetters([
       'isPlaying',
       'playMode',
-      'favorite'
+      'favorite',
+      'songData',
+      'currentIndex',
+      'currentSong'
     ])
   },
   watch: {
@@ -49,13 +52,59 @@ export default {
     ...mapActions([
       'togglePlayStatus',
       'togglePlayMode',
-      'toggleFavoriteStatus'
+      'toggleFavoriteStatus',
+      'changeCurrentIndex',
+      'changeTipsMsg'
     ]),
     play () {
       this.togglePlayStatus(!this.isPlaying)
     },
     mode () {
       this.togglePlayMode()
+    },
+    pre () {
+      const Length = this.songData.length - 1
+      // 随机模式播放
+      const rand = Math.random() * Length
+      if (this.playMode === 2) {
+        this.changeCurrentIndex(parseInt(rand))
+      }
+      // 非随机模式播放
+      if (this.currentIndex === 0 && this.playMode !== 2) {
+        this.changeCurrentIndex(Length)
+      } else if (this.playMode !== 2) {
+        this.changeCurrentIndex(this.currentIndex - 1)
+      }
+      if (Length === 0) {
+        this.changeTipsMsg(['歌单中没有其他歌曲了~', true])
+      }
+      if (this.currentSong.songUrl === null) {
+        setTimeout(() => {
+          this.changeCurrentIndex(this.currentIndex - 1)
+        }, 1000)
+      }
+    },
+    next () {
+      const Length = this.songData.length - 1
+      // 随机模式播放
+      const rand = Math.random() * Length
+      if (this.playMode === 2) {
+        this.changeCurrentIndex(parseInt(rand))
+      }
+      // 非随机模式播放
+      if (this.currentIndex >= Length && this.playMode !== 2) {
+        this.changeCurrentIndex(0)
+      } else if (this.playMode !== 2) {
+        this.changeCurrentIndex(this.currentIndex + 1)
+      }
+      if (Length === 0) {
+        this.changeTipsMsg(['歌单中没有其他歌曲了~', true])
+      }
+      if (this.currentSong.songUrl === null) {
+        setTimeout(() => {
+          this.changeCurrentIndex(this.currentIndex + 1)
+        }, 1000)
+      }
     },
     favoriteIt () {
       this.toggleFavoriteStatus(!this.favorite)

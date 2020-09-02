@@ -29,7 +29,10 @@
       </div>
     </div>
   </div>
-   <h3>歌曲列表</h3>
+      <div class="play-all">
+        <h3>歌曲列表</h3>
+        <span @click="playAll(ids)">播放全部</span>
+      </div>
       <div class="song-list">
        <div class="song-list-item" v-for="(song, i) in songsDetailList" :key="song.id">
     <div class="item-left">
@@ -123,7 +126,7 @@ export default {
       getSongDetail(ids).then(data => {
         this.songsDetailList = data.songs
       })
-
+      this.ids = ids
       this.description = this.playList.description.split('\n').slice(0, 3)
     }
   },
@@ -132,7 +135,8 @@ export default {
       playList: {},
       playListUserData: {},
       description: [],
-      songsDetailList: []
+      songsDetailList: [],
+      ids: ''
     }
   },
   methods: {
@@ -140,15 +144,23 @@ export default {
       'toggleLarge',
       'toggleMini',
       'changeSongData',
-      'togglePlayStatus'
+      'togglePlayStatus',
+      'changeCurrentIndex'
     ]),
     backPage () {
       window.history.back()
+    },
+    playAll (ids) {
+      this.changeSongData(ids)
+      this.toggleLarge(true)
+      this.toggleMini(false)
+      this.togglePlayStatus(true)
     },
     play (id) {
       this.toggleLarge(true)
       this.toggleMini(false)
       this.togglePlayStatus(true)
+      this.changeCurrentIndex(0)
       this.changeSongData(id)
     }
   }
@@ -157,6 +169,7 @@ export default {
 
 <style scoped lang="scss">
   @import "../assets/css/mixin";
+  @import "../assets/css/variable";
 .detail{
   width: 100%;
   height: 100%;
@@ -309,13 +322,30 @@ export default {
         }
       }
     }
-    h3{
+    .play-all{
       width: 100%;
-      height: 50px;
-      line-height: 50px;
-      background: #eee;
-      padding-left: 20px;
-      font-size: 25px;
+      height: 100px;
+      background:#eee;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      h3{
+        margin-left: 15px;
+        font-size: 28px;
+        color: #333;
+      }
+      span{
+        display: inline-block;
+        width: 150px;
+        height: 60px;
+        line-height: 60px;
+        background: #eee;
+        font-size: 28px;
+        text-align: center;
+        border-radius: 30px;
+        color: #fff;
+        @include bg_color;
+      }
     }
     .song-list{
       .song-list-item{

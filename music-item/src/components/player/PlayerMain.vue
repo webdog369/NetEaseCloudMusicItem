@@ -4,11 +4,11 @@
         <swiper-slide>
           <div class="content">
             <div :class="['cd',isPlaying?'active':'']">
-              <img :src="currentSong.picUrl" alt="">
+              <img :src="currentSong.picUrl"  v-show="currentSong.picUrl">
             </div>
             <div class="min-lyric">
               <ul>
-                <li v-for="(value, index) in currentSong.lyric" :key="index">{{value}}>我是歌词</li>
+                <li v-for="(value, index) in currentSong.lyric" :key="index">{{value}}</li>
               </ul>
             </div>
           </div>
@@ -44,8 +44,7 @@ export default {
         observeParents: true,
         observeSlideChildren: true
       },
-      lyric: [],
-      lyricTime: []
+      lyric: {}
     }
   },
   computed: {
@@ -54,11 +53,17 @@ export default {
       'songData',
       'currentSong'
     ])
+  },
+  watch: {
+    currentSong (newValue, oldValue) {
+
+    }
   }
 }
 </script>
 
 <style scoped lang="scss">
+  @import "../../assets/css/mixin";
 .play-main{
   position: absolute;
   width: 100%;
@@ -78,6 +83,7 @@ export default {
         transform: translateX(-50%);
         width: 600px;
         height: 600px;
+        background-image: url("../../assets/images/disc_default.png");
         background-position: center;
         background-size: 109%;
         border: 25px solid rgba(255,255,255,.1);
@@ -109,11 +115,15 @@ export default {
         ul{
           width: 100%;
           height: 100%;
-          overflow: auto;
+          overflow:hidden;
           li{
+            width: 80%;
+            height: 80px;
             text-align: center;
+            margin: 0 auto;
             color: #eee;
             font-size: 30px;
+            @include clamp(1)
           }
         }
       }
@@ -124,12 +134,13 @@ export default {
         padding-top: 30px;
         overflow: auto;
         li{
-          width: 100%;
-          height: 50px;
+          width: 80%;
           line-height: 50px;
           text-align: center;
+          margin: 0 auto;
           color: #eee;
           font-size: 30px;
+          @include clamp(2)
         }
 
     }

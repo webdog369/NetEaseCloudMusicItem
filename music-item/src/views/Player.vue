@@ -10,6 +10,7 @@
         @hiddenList="hiddenList"
       ></ListPlayer>
       <audio :src="currentSong.songUrl" autoplay ref="audio" :loop="loopFlag"></audio>
+      <Tips></Tips>
     </div>
 </template>
 
@@ -17,13 +18,15 @@
 import NormalPlayer from '../components/player/NormalPlayer'
 import MiniPlayer from '../components/player/MiniPlayer'
 import ListPlayer from '../components/player/ListPlayer'
-import { mapGetters } from 'vuex'
+import Tips from '../components/Tips'
+import { mapGetters, mapActions } from 'vuex'
 export default {
   name: 'Player',
   components: {
     NormalPlayer,
     MiniPlayer,
-    ListPlayer
+    ListPlayer,
+    Tips
   },
   mounted () {
     // setInterval(function () {
@@ -37,7 +40,9 @@ export default {
       'MiniPlayer',
       'currentSong',
       'isPlaying',
-      'playMode'
+      'playMode',
+      'songData',
+      'currentIndex'
     ])
   },
   watch: {
@@ -53,7 +58,7 @@ export default {
     },
     currentSong (n) {
       if (n.songUrl === null) {
-        console.error('该歌曲暂无播放链接')
+        this.changeTipsMsg(['sorry,该歌曲暂无版权~', true])
       }
     }
   },
@@ -64,6 +69,11 @@ export default {
     }
   },
   methods: {
+    ...mapActions([
+      'changeTipsMsg',
+      'changeCurrentIndex',
+      'togglePlayStatus'
+    ]),
     showList () {
       this.hidden = !this.hidden
     },

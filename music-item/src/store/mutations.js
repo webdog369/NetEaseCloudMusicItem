@@ -5,7 +5,10 @@ import {
   CHANGE_PLAY_STATUS,
   CHANGE_PLAY_MODE,
   CHANGE_FAVORITE_STATUS,
-  GET_SONG_DATA
+  GET_SONG_DATA,
+  DEL_SONG,
+  CHANGE_CURRENT_INDEX,
+  CHANGE_TIPS_MSG
 } from './mutations-type'
 
 export default {
@@ -30,5 +33,22 @@ export default {
   },
   [GET_SONG_DATA] (state, payload) {
     state.songData = payload
+  },
+  [DEL_SONG] (state, index) {
+    state.songData.splice(index, 1)
+    if (state.songData.length === 0) {
+      state.LargePlayer = false
+      state.MiniPlayer = false
+      state.isPlaying = false
+    }
+  },
+  [CHANGE_CURRENT_INDEX] (state, index) {
+    state.currentIndex = index
+  },
+  [CHANGE_TIPS_MSG] (state, msg) {
+    state.Tips = msg
+    setTimeout(function () {
+      state.Tips = ['', false]
+    }, 2000)
   }
 }

@@ -21,11 +21,19 @@ export default {
     const obj = {
       name: '暂无歌曲',
       singer: '暂无歌手',
-      picUrl: '../../assets/images/disc.png'
+      lyric: '暂无歌词',
+      songUrl: ''
     }
     if (state.songData.length === 0) {
       return obj
+    } else {
+      return state.songData[state.currentIndex]
     }
-    return state.songData[state.currentIndex]
+  },
+  currentIndex (state) {
+    return state.currentIndex
+  },
+  Tips (state) {
+    return state.Tips
   }
 }

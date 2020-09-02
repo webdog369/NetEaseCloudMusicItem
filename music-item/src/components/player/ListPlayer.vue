@@ -14,14 +14,17 @@
       </div>
       <div class="items">
         <div
-          class="song-list" v-for="v in songLists" :key="v.id" :id="v.id">
+          ref="listItem"
+          v-for="(item, index) in songData"
+          :key="item.id"
+          :class="['song-list',songData.length>3?'active':'']">
           <div class="song-name">
-            <div class="play" @click.stop="play(v.id)" :id="v.id"></div>
-            <h3>{{v.name}}</h3>
+            <div class="play" @click.stop="play(index)"></div>
+            <h3>{{item.name}}</h3>
           </div>
           <div class="song-btns">
             <div class="favorite"></div>
-            <div class="del"></div>
+            <div class="del" @click.stop="del(index)"></div>
           </div>
         </div>
       </div>
@@ -52,34 +55,16 @@ export default {
         this.$refs.modeBtn.classList.replace('mode1', 'mode2')
         this.$refs.modeName.innerHTML = '随机播放'
       }
-    },
-    currentSong (n, o) {
-      const list = []
-      for (let i = 0; i < sessionStorage.length; i++) {
-        const data = sessionStorage.getItem('song-' + i).split(',')
-        const obj = {
-          name: data[0],
-          singer: data[1],
-          id: data[2]
-        }
-        list.unshift(obj)
-      }
-      // for (let i = 0; i < list.length; i++) {
-      //   if (!this.songList.includes(list[i])) {
-      //     this.songList.push(list[i])
-      //   }
-      // }
     }
   },
   computed: {
     ...mapGetters([
       'isPlaying',
       'playMode',
-      'currentSong'
-    ]),
-    songLists () {
-      return Array.from(new Set(this.songList))
-    }
+      'currentSong',
+      'songData',
+      'currentIndex'
+    ])
   },
   methods: {
     ...mapActions([
@@ -87,22 +72,25 @@ export default {
       'toggleMini',
       'togglePlayStatus',
       'togglePlayMode',
-      'changeSongData'
+      'changeSongData',
+      'delSong',
+      'changeCurrentIndex'
     ]),
     hiddenList () {
       this.$emit('hiddenList')
     },
-    play (id) {
+    play (index) {
       this.toggleLarge(true)
       this.toggleMini(false)
       this.togglePlayStatus(true)
-      this.changeSongData([id])
-      // el.target.classList.add('active')
-      // el.target.id
+      this.changeCurrentIndex(index)
     },
     mode () {
       this.togglePlayMode()
       console.log(this.playMode)
+    },
+    del (index) {
+      this.delSong(index)
     },
     enter (el, done) {
       Velocity(el, 'transition.perspectiveUpIn', { duration: 500 }, function () {
@@ -183,11 +171,13 @@ export default {
       justify-content: space-between;
       border-top: 1px solid #ccc;
       box-sizing: border-box;
-      &:last-child{
-        margin-bottom: 80px;
+      &.active{
+        &:last-child{
+          margin-bottom: 80px;
+        }
       }
       .song-name{
-        width: 220px;
+        width: 70%;
         height: 100%;
         display: flex;
         justify-content: space-around;
@@ -201,9 +191,10 @@ export default {
           }
         }
         h3{
-          width: 50%;
+          width: 80%;
           font-size: 28px;
           @include font_color_songName;
+          @include clamp(1)
         }
       }
       .song-btns{
