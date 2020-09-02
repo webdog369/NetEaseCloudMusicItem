@@ -75,9 +75,9 @@ export default {
         })
         // 加入当前歌曲的歌词
         obj.lyric = lyricObj
+        list.push(obj)
       })
 
-      list.push(obj)
       // console.log(list)
     })
 

@@ -55,9 +55,6 @@ export default {
     ])
   },
   watch: {
-    currentSong (newValue, oldValue) {
-
-    }
   }
 }
 </script>

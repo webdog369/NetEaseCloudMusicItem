@@ -59,6 +59,7 @@ export default {
     currentSong (n) {
       if (n.songUrl === null) {
         this.changeTipsMsg(['sorry,该歌曲暂无版权~', true])
+        this.togglePlayStatus(false)
       }
     }
   },
