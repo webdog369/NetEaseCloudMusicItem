@@ -16,5 +16,6 @@ export default {
   // 当前播放歌曲缩影
   currentIndex: 0,
   // 当前Tips提示信息
-  Tips: ['', false]
+  Tips: ['', false],
+  currentTime: 0
 }

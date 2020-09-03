@@ -7,7 +7,8 @@ import {
   GET_SONG_DATA,
   DEL_SONG,
   CHANGE_CURRENT_INDEX,
-  CHANGE_TIPS_MSG
+  CHANGE_TIPS_MSG,
+  CHANGE_CURRENT_TIME
 } from './mutations-type'
 import { getSongDetail, getSongUrl, getSongLyric } from '../api'
 export default {
@@ -104,6 +105,10 @@ export default {
   // 改变Tips的信息和显示隐藏
   changeTipsMsg ({ commit }, msg) {
     commit(CHANGE_TIPS_MSG, msg)
+  },
+  // 改变当前歌曲播放时间
+  changeCurrentTime ({ commit }, time) {
+    commit(CHANGE_CURRENT_TIME, time)
   }
 
 }

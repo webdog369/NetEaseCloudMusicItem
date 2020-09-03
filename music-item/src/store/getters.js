@@ -35,5 +35,8 @@ export default {
   },
   Tips (state) {
     return state.Tips
+  },
+  currentTime (state) {
+    return state.currentTime
   }
 }

@@ -8,7 +8,8 @@ import {
   GET_SONG_DATA,
   DEL_SONG,
   CHANGE_CURRENT_INDEX,
-  CHANGE_TIPS_MSG
+  CHANGE_TIPS_MSG,
+  CHANGE_CURRENT_TIME
 } from './mutations-type'
 
 export default {
@@ -53,5 +54,8 @@ export default {
     setTimeout(function () {
       state.Tips = ['', false]
     }, 2000)
+  },
+  [CHANGE_CURRENT_TIME] (state, payload) {
+    state.currentTime = payload
   }
 }

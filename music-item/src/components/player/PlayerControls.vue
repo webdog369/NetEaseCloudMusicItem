@@ -1,13 +1,13 @@
 <template>
     <div class="player-controls">
       <div class="progress-bar">
-        <span>00:00</span>
-        <ul>
-          <li>
+        <span>{{currentSongTime | formartTime}}</span>
+        <ul ref="progressBottom" @click="jumpTime">
+          <li ref="progress">
             <span></span>
           </li>
         </ul>
-        <span>00:00</span>
+        <span>{{currentSongTotalTime | formartTime}}</span>
       </div>
       <div class="play-btns">
         <div class="mode" @click="mode" ref="modeBtn"></div>
@@ -46,6 +46,23 @@ export default {
       } else if (this.playMode === 2) {
         this.$refs.modeBtn.classList.replace('mode1', 'mode2')
       }
+    },
+    currentSongTime (newTime) {
+      const totalLength = this.$refs.progressBottom.clientWidth
+      this.$refs.progress.style.width = newTime / this.currentSongTotalTime * totalLength + 'px'
+    }
+  },
+  data () {
+    return {
+    }
+  },
+  props: ['currentSongTotalTime', 'currentSongTime'],
+  filters: {
+    // 格式化歌曲时间
+    formartTime: (value) => {
+      const minute = parseInt(value / 60) + ''
+      const second = parseInt(value % 60) + ''
+      return `${minute.padStart(2, '0')}:${second.padStart(2, '0')}`
     }
   },
   methods: {
@@ -54,8 +71,17 @@ export default {
       'togglePlayMode',
       'toggleFavoriteStatus',
       'changeCurrentIndex',
-      'changeTipsMsg'
+      'changeTipsMsg',
+      'changeCurrentTime'
     ]),
+    jumpTime (el) {
+      const offsetX = el.offsetX
+      const totalWidth = this.$refs.progressBottom.clientWidth
+      const value = offsetX / totalWidth
+      const time = value * this.currentSongTotalTime
+      this.changeCurrentTime(time)
+      this.$refs.progress.style.width = offsetX + 'px'
+    },
     play () {
       this.togglePlayStatus(!this.isPlaying)
     },
@@ -129,32 +155,32 @@ export default {
   transform: translate3d(0,0,0);
   overflow: hidden;
   .progress-bar{
-    width: 80%;
+    width: 85%;
     height: 30px;
     /*background: grey;*/
     margin: 5px auto;
     display: flex;
-    justify-content: space-between;
+    justify-content: space-around;
     align-items: center;
     &>span{
       font-size: 22px;
       color: #fff;
     }
     ul{
-      width: 80%;
+      width: 72%;
       height: 30%;
       background: #fff;
       margin-left: 5px;
       margin-right: 5px;
       li{
         position: relative;
-        width: 70%;
+        width:0;
         height: 100%;
         @include bg_color;
         span{
           position: absolute;
           top:50%;
-          right:0;
+          right:-30px;
           transform: translateY(-50%);
           display: inline-block;
           width: 30px;

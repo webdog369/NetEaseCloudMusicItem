@@ -9,7 +9,10 @@
       <div class="mask"></div>
        <PlayerNav></PlayerNav>
       <PlayerMain></PlayerMain>
-      <player-controls></player-controls>
+      <player-controls
+        :currentSongTotalTime="currentSongTotalTime"
+        :currentSongTime="currentSongTime"
+      ></player-controls>
     </div>
   </transition>
 </template>
@@ -34,6 +37,7 @@ export default {
       'currentSong'
     ])
   },
+  props: ['currentSongTotalTime', 'currentSongTime'],
   watch: {
     currentSong () {
       this.$refs.bg.style.backgroundImage = `url(${this.currentSong.picUrl})`

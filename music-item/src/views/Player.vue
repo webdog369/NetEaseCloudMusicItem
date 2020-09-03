@@ -1,6 +1,10 @@
 <template>
     <div class="player" ref="player">
-      <NormalPlayer ref="normal" v-show="LargePlayer"></NormalPlayer>
+      <NormalPlayer
+        ref="normal" v-show="LargePlayer"
+        :currentSongTotalTime="currentSongTotalTime"
+        :currentSongTime="currentSongTime"
+      ></NormalPlayer>
       <MiniPlayer
         v-show="MiniPlayer"
         @showList="showList"
@@ -9,7 +13,7 @@
         v-show="hidden && MiniPlayer"
         @hiddenList="hiddenList"
       ></ListPlayer>
-      <audio :src="songUrl" autoplay ref="audio" :loop="loopFlag"></audio>
+      <audio :src="songUrl" autoplay ref="audio" :loop="loopFlag" @timeupdate="timeupdate"></audio>
       <Tips></Tips>
     </div>
 </template>
@@ -29,8 +33,11 @@ export default {
     Tips
   },
   mounted () {
+    this.$refs.audio.oncanplay = () => {
+      this.currentSongTotalTime = this.$refs.audio.duration
+    }
     // setInterval(function () {
-    //   console.log(this.$refs.audio.duration)
+
     //   console.log(this.$refs.audio.currentTime)
     // }, 1000)
   },
@@ -42,15 +49,17 @@ export default {
       'isPlaying',
       'playMode',
       'songData',
-      'currentIndex'
+      'currentIndex',
+      'currentTime'
     ])
   },
   watch: {
     isPlaying (n, o) {
       if (n) {
-        this.$refs.audio.oncanPlay = () => {
-          this.$refs.audio.play()
-        }
+        this.$refs.audio.play()
+        // this.$refs.audio.oncanPlay = () => {
+        //   this.currentSongTime = this.$refs.audio.target.currentTime
+        // }
       } else {
         this.$refs.audio.pause()
       }
@@ -65,13 +74,18 @@ export default {
       } else {
         this.songUrl = n.songUrl
       }
+    },
+    currentTime (n) {
+      this.$refs.audio.currentTime = n
     }
   },
   data () {
     return {
       hidden: false,
       loopFlag: false,
-      songUrl: ''
+      songUrl: '',
+      currentSongTime: 0,
+      currentSongTotalTime: 0
     }
   },
   methods: {
@@ -85,6 +99,9 @@ export default {
     },
     hiddenList () {
       this.hidden = false
+    },
+    timeupdate (e) {
+      this.currentSongTime = e.target.currentTime
     }
   }
 }
