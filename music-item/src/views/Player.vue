@@ -9,7 +9,7 @@
         v-show="hidden && MiniPlayer"
         @hiddenList="hiddenList"
       ></ListPlayer>
-      <audio :src="currentSong.songUrl" autoplay ref="audio" :loop="loopFlag"></audio>
+      <audio :src="songUrl" autoplay ref="audio" :loop="loopFlag"></audio>
       <Tips></Tips>
     </div>
 </template>
@@ -48,7 +48,9 @@ export default {
   watch: {
     isPlaying (n, o) {
       if (n) {
-        this.$refs.audio.play()
+        this.$refs.audio.oncanPlay = () => {
+          this.$refs.audio.play()
+        }
       } else {
         this.$refs.audio.pause()
       }
@@ -60,13 +62,16 @@ export default {
       if (n.songUrl === null) {
         this.changeTipsMsg(['sorry,该歌曲暂无版权~', true])
         this.togglePlayStatus(false)
+      } else {
+        this.songUrl = n.songUrl
       }
     }
   },
   data () {
     return {
       hidden: false,
-      loopFlag: false
+      loopFlag: false,
+      songUrl: ''
     }
   },
   methods: {

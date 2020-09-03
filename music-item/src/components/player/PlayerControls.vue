@@ -81,6 +81,7 @@ export default {
       if (this.currentSong.songUrl === null) {
         setTimeout(() => {
           this.changeCurrentIndex(this.currentIndex - 1)
+          this.togglePlayStatus(true)
         }, 1000)
       }
     },
@@ -103,6 +104,7 @@ export default {
       if (this.currentSong.songUrl === null) {
         setTimeout(() => {
           this.changeCurrentIndex(this.currentIndex + 1)
+          this.togglePlayStatus(true)
         }, 1000)
       }
     },

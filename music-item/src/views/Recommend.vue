@@ -18,7 +18,7 @@
 import Banner from '../components/recomment/Banner'
 import Personalized from '../components/recomment/Personalized'
 import SongList from '../components/recomment/SongList'
-import ScrollView from '../components/ScrollView'
+import ScrollView from './ScrollView'
 import { getPersonalized, getBanner, getTopAlbum, getNewSong } from '../api'
 
 export default {

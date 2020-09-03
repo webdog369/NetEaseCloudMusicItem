@@ -36,6 +36,9 @@ export default {
   },
   [DEL_SONG] (state, index) {
     state.songData.splice(index, 1)
+    if (state.currentIndex > index) {
+      state.currentIndex -= 1
+    }
     if (state.songData.length === 0) {
       state.LargePlayer = false
       state.MiniPlayer = false

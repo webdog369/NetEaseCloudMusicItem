@@ -11,25 +11,33 @@ import {
 } from './mutations-type'
 import { getSongDetail, getSongUrl, getSongLyric } from '../api'
 export default {
+  // 切换全屏播放器
   toggleLarge ({ commit }, payload) {
     commit(CHANGE_LARGE_PLAYER, payload)
   },
+  // 切换迷你播放器
   toggleMini ({ commit }, payload) {
     commit(CHANGE_MINI_PLAYER, payload)
   },
+  // 切换播放状态
   togglePlayStatus ({ commit }, payload) {
     commit(CHANGE_PLAY_STATUS, payload)
   },
+  // 切换播放模式
   togglePlayMode ({ commit }, payload) {
     commit(CHANGE_PLAY_MODE, payload)
   },
+  // 切换爱心状态
   toggleFavoriteStatus ({ commit }, payload) {
     commit(CHANGE_FAVORITE_STATUS, payload)
   },
+  // 获取歌曲列表
   async changeSongData ({ commit }, payload) {
+    // 获取歌曲信息详情
     const res = await getSongDetail(payload)
+    // 获取歌曲播放地址详情
     const songUrls = await getSongUrl(payload)
-    // const songLyric = await getSongLyric(payload)
+    // 定义个数组 接收筛选重组好的歌曲信息
     const list = []
     // 遍历加入歌曲信息
     res.songs.forEach(function (value) {
@@ -45,8 +53,9 @@ export default {
           obj.songUrl = key.url
         }
       }
-      // 格式化歌词的方法
+      // 获取歌词 并格式化歌词
       getSongLyric(value.id).then(data => {
+        // 格式化歌词的方法
         const lyrics = data.lrc.lyric.split('\n')
         // [00:00.000] 作曲 : 林俊杰
         // 1.定义正则表达式提取[00:00.000]
@@ -73,6 +82,7 @@ export default {
           // 6.保存数据
           lyricObj[time] = text
         })
+
         // 加入当前歌曲的歌词
         obj.lyric = lyricObj
         list.push(obj)
@@ -83,13 +93,15 @@ export default {
 
     commit(GET_SONG_DATA, list)
   },
-
+  // 删除列表中的歌曲
   delSong ({ commit }, index) {
     commit(DEL_SONG, index)
   },
+  // 改变当前歌曲索引
   changeCurrentIndex ({ commit }, index) {
     commit(CHANGE_CURRENT_INDEX, index)
   },
+  // 改变Tips的信息和显示隐藏
   changeTipsMsg ({ commit }, msg) {
     commit(CHANGE_TIPS_MSG, msg)
   }

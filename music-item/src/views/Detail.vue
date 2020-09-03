@@ -52,7 +52,7 @@
 
 <script>
 import { getPlayList, getPlayListUser, getSongDetail, getAlbumDetail } from '../api'
-import ScrollView from '../components/ScrollView'
+import ScrollView from './ScrollView'
 import { mapGetters, mapActions } from 'vuex'
 export default {
   name: 'Detail',
@@ -148,7 +148,8 @@ export default {
       'changeCurrentIndex'
     ]),
     backPage () {
-      window.history.back()
+      // 因为使用了push跳转 此处需要退回两次
+      window.history.go(-2)
     },
     playAll (ids) {
       this.changeSongData(ids)
