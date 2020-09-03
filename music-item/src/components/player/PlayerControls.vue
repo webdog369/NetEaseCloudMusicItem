@@ -4,7 +4,7 @@
         <span>{{currentSongTime | formartTime}}</span>
         <ul ref="progressBottom" @click="jumpTime">
           <li ref="progress">
-            <span></span>
+            <span @mousedown="startTime"></span>
           </li>
         </ul>
         <span>{{currentSongTotalTime | formartTime}}</span>
@@ -48,8 +48,21 @@ export default {
       }
     },
     currentSongTime (newTime) {
+      // 进度条宽度同步
       const totalLength = this.$refs.progressBottom.clientWidth
       this.$refs.progress.style.width = newTime / this.currentSongTotalTime * totalLength + 'px'
+      // 播放模式同步
+      if (this.currentSongTime === this.currentSongTotalTime) {
+        if (this.songData.length > 1) {
+          this.next()
+        } else {
+          // 如果歌曲列表中只有一首歌 则需要重头开始播放
+          this.togglePlayStatus(false)
+          setTimeout(() => {
+            this.togglePlayStatus(true)
+          }, 100)
+        }
+      }
     }
   },
   data () {
@@ -81,6 +94,9 @@ export default {
       const time = value * this.currentSongTotalTime
       this.changeCurrentTime(time)
       this.$refs.progress.style.width = offsetX + 'px'
+    },
+    startTime (e) {
+      console.log('aaa')
     },
     play () {
       this.togglePlayStatus(!this.isPlaying)

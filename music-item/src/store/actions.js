@@ -83,9 +83,12 @@ export default {
           // 6.保存数据
           lyricObj[time] = text
         })
-
         // 加入当前歌曲的歌词
-        obj.lyric = lyricObj
+        if (obj.songUrl !== null && lyricObj[0] === undefined) {
+          obj.lyric = { 0: '纯音乐,请欣赏' }
+        } else {
+          obj.lyric = lyricObj
+        }
         list.push(obj)
       })
 
