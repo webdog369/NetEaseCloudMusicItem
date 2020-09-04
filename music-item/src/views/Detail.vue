@@ -1,6 +1,6 @@
 <template>
 <div class="detail">
-  <ScrollView>
+  <ScrollView ref="scrollView">
     <div :class="['box',MiniPlayer?'ch-pd-btm':'']">
   <div class="header">
     <div class="top" >
@@ -128,6 +128,12 @@ export default {
       })
       this.ids = ids
       this.description = this.playList.description.split('\n').slice(0, 3)
+    },
+    // 监测到迷你播放器出现后延迟100ms刷新ScrollView
+    MiniPlayer () {
+      setTimeout(() => {
+        this.$refs.scrollView.iscroll.refresh()
+      }, 100)
     }
   },
   data () {
@@ -423,7 +429,7 @@ export default {
     }
   }
   & .ch-pd-btm{
-    padding-bottom: 130px !important;
+    padding-bottom: 130px;
   }
 }
 </style>

@@ -1,6 +1,6 @@
 <template>
 <div class="recommend">
-    <ScrollView>
+    <ScrollView ref="scrollView">
       <div>
         <Banner :banners='bannerData'></Banner>
         <personalized :datas='personalizedData' :title="'推荐歌单'" @getDetail="getDetail"></personalized>
@@ -19,6 +19,7 @@ import Banner from '../components/recomment/Banner'
 import Personalized from '../components/recomment/Personalized'
 import SongList from '../components/recomment/SongList'
 import ScrollView from './ScrollView'
+import { mapGetters } from 'vuex'
 import { getPersonalized, getBanner, getTopAlbum, getNewSong } from '../api'
 
 export default {
@@ -66,6 +67,23 @@ export default {
     ScrollView
   },
   computed: {
+    ...mapGetters([
+      'MiniPlayer'
+    ])
+  },
+  watch: {
+    // 监测页面歌曲列表加载完成后延迟100ms刷新ScrollView
+    songs () {
+      setTimeout(() => {
+        this.$refs.scrollView.iscroll.refresh()
+      }, 100)
+    },
+    // 监测到迷你播放器出现后延迟100ms刷新ScrollView
+    MiniPlayer () {
+      setTimeout(() => {
+        this.$refs.scrollView.iscroll.refresh()
+      }, 100)
+    }
   }
 }
 </script>
