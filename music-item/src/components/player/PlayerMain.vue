@@ -6,17 +6,27 @@
             <div :class="['cd',isPlaying?'active':'']">
               <img :src="currentSong.picUrl"  v-show="currentSong.picUrl">
             </div>
-            <div class="min-lyric">
-              <ul>
-                <li v-for="(value, index) in currentSong.lyric" :key="index">{{value}}</li>
+            <div class="mini-lyric" ref="miniLyric">
+              <ul ref="miniLyricBox">
+                <li
+                  v-for="(value,key, index) in currentSong.lyric"
+                  :key="index"
+                  :class="{'active': timeLine === key}"
+                >{{value}}</li>
               </ul>
             </div>
           </div>
         </swiper-slide>
         <swiper-slide>
-          <ul class="lyric">
-           <li v-for="(value, index) in currentSong.lyric" :key="index">{{value}}</li>
-          </ul>
+          <div class="lyric" ref="lyric">
+            <ul ref="lyricBox">
+             <li
+               v-for="(value,key,index) in currentSong.lyric"
+               :key="index"
+               :class="{'active': timeLine === key}"
+             >{{value}}</li>
+            </ul>
+          </div>
         </swiper-slide>
         <div class="swiper-pagination" slot="pagination"></div>
       </swiper>
@@ -44,23 +54,60 @@ export default {
         observeParents: true,
         observeSlideChildren: true
       },
-      lyric: {}
+      timeLine: '0'
     }
   },
   computed: {
     ...mapGetters([
       'isPlaying',
       'songData',
-      'currentSong'
+      'currentSong',
+      'currentTime'
     ])
   },
+  props: ['currentSongTime', 'currentSongTotalTime'],
   watch: {
+    currentSongTime (time) {
+      // 歌词高亮同步
+      const timeLine = parseInt(time)
+      const res = this.currentSong.lyric[timeLine]
+      if (res !== undefined && res !== '') {
+        this.timeLine = timeLine + ''
+      }
+      if (time < 2) {
+        this.$refs.lyricBox.style.top = 0
+        this.$refs.miniLyricBox.style.top = 0
+      }
+    },
+    timeLine () {
+      this.lyricScroll('.mini-lyric', this.$refs.miniLyric, this.$refs.miniLyricBox)
+      this.lyricScroll('.lyric', this.$refs.lyric, this.$refs.lyricBox)
+    },
+    currentSong () {
+      this.$refs.lyricBox.style.top = 0
+      this.$refs.miniLyricBox.style.top = 0
+    }
+  },
+  methods: {
+    // 歌词滚动同步方法
+    lyricScroll (lyricClassName, lyricRef, lyricBoxRef) {
+      // 大屏歌词滚动同步
+      const offsetTop = document.querySelector(`${lyricClassName} li.active`).offsetTop
+      console.log(offsetTop)
+      const value = lyricRef.clientHeight / 2
+      const lyricItemHeight = document.querySelector(`${lyricClassName} li.active`).clientHeight
+      const step = -offsetTop - lyricItemHeight + value
+      if (offsetTop > value) {
+        lyricBoxRef.style.top = step + 'px'
+      }
+    }
   }
 }
 </script>
 
 <style scoped lang="scss">
   @import "../../assets/css/mixin";
+  @import "../../assets/css/variable";
 .play-main{
   position: absolute;
   width: 100%;
@@ -102,44 +149,69 @@ export default {
           border: 12px solid #000;
         }
       }
-      .min-lyric{
+      .mini-lyric{
         position: absolute;
         top:75%;
         width: 100%;
         height:180px;
         z-index: -1;
         font-size: 26px;
+        overflow: hidden;
         ul{
+          position: relative;
+          left: 0;
+          top: 0;
           width: 100%;
           height: 100%;
-          overflow:hidden;
+          transition: all .3s linear;
           li{
             width: 80%;
-            height: 80px;
+            line-height: 60px;
             text-align: center;
             margin: 0 auto;
             color: #eee;
             font-size: 30px;
-            @include clamp(1)
+            @include clamp(1);
+            transition: all .3s linear;
+            &.active {
+              font-size: 35px;
+              @include font_active_color;
+            }
           }
         }
       }
     }
     .lyric{
+        position: relative;
+        left: 0;
+        top: 0;
         width: 100%;
         height: 90%;
         padding-top: 30px;
-        overflow: auto;
+        /*overflow: auto;*/
+        overflow: hidden;
+      ul{
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        left: 0;
+        top: 0;
+        transition: all .3s linear;
         li{
           width: 80%;
-          line-height: 50px;
+          line-height: 80px;
           text-align: center;
           margin: 0 auto;
           color: #eee;
           font-size: 30px;
-          @include clamp(2)
-        }
-
+          @include clamp(2);
+          transition: all .3s linear;
+          &.active {
+            font-size: 35px;
+            @include font_active_color;
+          }
+      }
+      }
     }
   }
   @keyframes cd {

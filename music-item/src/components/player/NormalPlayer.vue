@@ -8,7 +8,10 @@
       <div class="bg" ref="bg"></div>
       <div class="mask"></div>
        <PlayerNav></PlayerNav>
-      <PlayerMain></PlayerMain>
+      <PlayerMain
+        :currentSongTime="currentSongTime"
+        :currentSongTotalTime="currentSongTotalTime"
+      ></PlayerMain>
       <player-controls
         :currentSongTotalTime="currentSongTotalTime"
         :currentSongTime="currentSongTime"

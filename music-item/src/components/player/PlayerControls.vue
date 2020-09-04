@@ -126,6 +126,12 @@ export default {
           this.togglePlayStatus(true)
         }, 1000)
       }
+      if (!this.isPlaying) {
+        this.togglePlayStatus(true)
+        setTimeout(() => {
+          this.togglePlayStatus(false)
+        }, 1)
+      }
     },
     next () {
       const Length = this.songData.length - 1
@@ -148,6 +154,12 @@ export default {
           this.changeCurrentIndex(this.currentIndex + 1)
           this.togglePlayStatus(true)
         }, 1000)
+      }
+      if (!this.isPlaying) {
+        this.togglePlayStatus(true)
+        setTimeout(() => {
+          this.togglePlayStatus(false)
+        }, 1)
       }
     },
     favoriteIt () {

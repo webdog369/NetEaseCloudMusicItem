@@ -63,6 +63,7 @@ export default {
         const reg1 = /\[\d*:\d*\.\d*\]/g
         // 2.定义正则表达式提取 [00
         // const reg2 = /\[\d*!/i
+        const reg2 = /\[\d*/i
         // 3.定义正则表达式提取 :00
         const reg3 = /\:\d*/i
         // 4.定义对象保存处理好的歌词
@@ -73,7 +74,7 @@ export default {
           if (!timeStr) { return }
           timeStr = timeStr[0]
           // 2.提取分钟
-          const minStr = timeStr.match(/\[\d*/i)[0].substr(1)
+          const minStr = timeStr.match(reg2)[0].substr(1)
           // 3.提取秒钟
           const secondStr = timeStr.match(reg3)[0].substr(1)
           // 4.合并时间, 将分钟和秒钟都合并为秒钟
@@ -83,13 +84,16 @@ export default {
           // 6.保存数据
           lyricObj[time] = text
         })
+        // console.log(lyricObj)
         // 加入当前歌曲的歌词
-        if (obj.songUrl !== null && lyricObj[0] === undefined) {
-          obj.lyric = { 0: '纯音乐,请欣赏' }
+        if (lyricObj[0] === undefined) {
+          obj.lyric = { 0: '暂无歌词' }
         } else {
           obj.lyric = lyricObj
         }
         list.push(obj)
+      }).catch(err => {
+        console.log(err)
       })
 
       // console.log(list)
