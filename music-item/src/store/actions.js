@@ -52,6 +52,7 @@ export default {
       for (const key of songUrls.data) {
         if (key.id === value.id) {
           obj.songUrl = key.url
+          break
         }
       }
       // 获取歌词 并格式化歌词
@@ -92,8 +93,8 @@ export default {
           obj.lyric = lyricObj
         }
         list.push(obj)
-      }).catch(err => {
-        console.log(err)
+      }).catch(() => {
+        console.log('歌词数据卖力加载中...')
       })
 
       // console.log(list)

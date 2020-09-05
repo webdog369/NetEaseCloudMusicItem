@@ -70,19 +70,21 @@ export default {
     currentSongTime (time) {
       // 歌词高亮同步
       const timeLine = parseInt(time)
-      const res = this.currentSong.lyric[timeLine]
-      if (res !== undefined && res !== '') {
-        this.timeLine = timeLine + ''
+      this.timeLine = this.getActiveTimeLine(timeLine)
+      try {
+        this.lyricScroll('.mini-lyric', this.$refs.miniLyric, this.$refs.miniLyricBox)
+        this.lyricScroll('.lyric', this.$refs.lyric, this.$refs.lyricBox)
+      } catch (e) {
+        console.log('歌词组件还没加载完,暂时获取不到偏移位而已,小问题,不打紧...')
       }
-      if (time < 2) {
+
+      // 单曲循环或列表只有一首歌时 在歌曲播完后强制回到顶部
+      if (time < 1) {
         this.$refs.lyricBox.style.top = 0
         this.$refs.miniLyricBox.style.top = 0
       }
     },
-    timeLine () {
-      this.lyricScroll('.mini-lyric', this.$refs.miniLyric, this.$refs.miniLyricBox)
-      this.lyricScroll('.lyric', this.$refs.lyric, this.$refs.lyricBox)
-    },
+    // 歌曲发生变化时 歌词回滚到顶部
     currentSong () {
       this.$refs.lyricBox.style.top = 0
       this.$refs.miniLyricBox.style.top = 0
@@ -93,12 +95,25 @@ export default {
     lyricScroll (lyricClassName, lyricRef, lyricBoxRef) {
       // 大屏歌词滚动同步
       const offsetTop = document.querySelector(`${lyricClassName} li.active`).offsetTop
-      console.log(offsetTop)
+      // console.log(offsetTop)
       const value = lyricRef.clientHeight / 2
       const lyricItemHeight = document.querySelector(`${lyricClassName} li.active`).clientHeight
       const step = -offsetTop - lyricItemHeight + value
       if (offsetTop > value) {
         lyricBoxRef.style.top = step + 'px'
+      }
+    },
+    // 歌词立即同步方法
+    getActiveTimeLine (timeLine) {
+      if (timeLine < 0) {
+        return timeLine
+      }
+      const res = this.currentSong.lyric[timeLine]
+      if (res === undefined || res === '') {
+        timeLine--
+        return this.getActiveTimeLine(timeLine)
+      } else {
+        return timeLine + ''
       }
     }
   }

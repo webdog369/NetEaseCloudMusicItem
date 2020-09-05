@@ -208,11 +208,11 @@ export default {
         span{
           position: absolute;
           top:50%;
-          right:-30px;
+          right:-11px;
           transform: translateY(-50%);
           display: inline-block;
-          width: 30px;
-          height: 30px;
+          width: 22px;
+          height: 22px;
           background: #ffffff;
           border: 1px solid #333;
           border-radius: 50%;

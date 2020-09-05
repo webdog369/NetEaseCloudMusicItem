@@ -52,10 +52,6 @@ export default {
     ])
   },
   watch: {
-    currentSong (n, o) {
-      const i = sessionStorage.length
-      sessionStorage.setItem('song-' + i, `${n.name},${n.singer},${n.id}`)
-    }
   }
 }
 </script>
