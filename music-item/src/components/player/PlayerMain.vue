@@ -71,23 +71,22 @@ export default {
       // 歌词高亮同步
       const timeLine = parseInt(time)
       this.timeLine = this.getActiveTimeLine(timeLine)
-      try {
+      this.$nextTick(() => {
         this.lyricScroll('.mini-lyric', this.$refs.miniLyric, this.$refs.miniLyricBox)
         this.lyricScroll('.lyric', this.$refs.lyric, this.$refs.lyricBox)
-      } catch (e) {
-        console.log('歌词组件还没加载完,暂时获取不到偏移位而已,小问题,不打紧...')
-      }
-
-      // 单曲循环或列表只有一首歌时 在歌曲播完后强制回到顶部
-      if (time < 1) {
+      })
+      // // 单曲循环或列表只有一首歌时 在歌曲播完后强制回到顶部
+      if (time === 0) {
         this.$refs.lyricBox.style.top = 0
         this.$refs.miniLyricBox.style.top = 0
       }
     },
     // 歌曲发生变化时 歌词回滚到顶部
     currentSong () {
-      this.$refs.lyricBox.style.top = 0
-      this.$refs.miniLyricBox.style.top = 0
+      this.$nextTick(() => {
+        this.$refs.lyricBox.style.top = 0
+        this.$refs.miniLyricBox.style.top = 0
+      })
     }
   },
   methods: {
@@ -97,7 +96,7 @@ export default {
       const offsetTop = document.querySelector(`${lyricClassName} li.active`).offsetTop
       // console.log(offsetTop)
       const value = lyricRef.clientHeight / 2
-      const lyricItemHeight = document.querySelector(`${lyricClassName} li.active`).clientHeight
+      const lyricItemHeight = document.querySelector(`${lyricClassName} li.active`).clientHeight / 2
       const step = -offsetTop - lyricItemHeight + value
       if (offsetTop > value) {
         lyricBoxRef.style.top = step + 'px'
@@ -170,7 +169,6 @@ export default {
         width: 100%;
         height:180px;
         z-index: -1;
-        font-size: 26px;
         overflow: hidden;
         ul{
           position: relative;
@@ -181,7 +179,7 @@ export default {
           transition: all .3s linear;
           li{
             width: 80%;
-            line-height: 60px;
+            line-height: 55px;
             text-align: center;
             margin: 0 auto;
             color: #eee;

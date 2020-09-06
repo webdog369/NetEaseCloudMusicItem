@@ -33,13 +33,9 @@ export default {
     Tips
   },
   mounted () {
-    this.$refs.audio.oncanplay = () => {
+    this.$refs.audio.ondurationchange = () => {
       this.currentSongTotalTime = this.$refs.audio.duration
     }
-    // setInterval(function () {
-
-    //   console.log(this.$refs.audio.currentTime)
-    // }, 1000)
   },
   computed: {
     ...mapGetters([
@@ -57,9 +53,6 @@ export default {
     isPlaying (n, o) {
       if (n) {
         this.$refs.audio.play()
-        // this.$refs.audio.oncanPlay = () => {
-        //   this.currentSongTime = this.$refs.audio.target.currentTime
-        // }
       } else {
         this.$refs.audio.pause()
       }

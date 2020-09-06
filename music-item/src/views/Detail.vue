@@ -317,7 +317,7 @@ export default {
           height: 85px;
           padding-top: 15px;
           padding-bottom: 30px;
-          overflow: auto;
+          @include clamp(3);
           span{
             i{
               font-size: 28px;
@@ -378,6 +378,7 @@ export default {
             text-align: center;
             color: #666;
             float: left;
+            font-size: 26px;
             &:after{
               content: "";
               height: 100%;
@@ -392,7 +393,8 @@ export default {
               width: 100%;
               height: 50%;
               line-height: 50px;
-              @include font_size($font_medium);
+              //@include font_size($font_medium);
+              font-size: 28px;
               @include font_color_songName();
               @include no-wrap();
               @include clamp(1);
@@ -401,7 +403,8 @@ export default {
               width: 80%;
               height: 50%;
               line-height: 50px;
-              @include font_size($font_samll);
+              //@include font_size($font_samll);
+              font-size: 24px;
               @include font_color;
               @include no-wrap();
               @include clamp(1);

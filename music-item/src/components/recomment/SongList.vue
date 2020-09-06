@@ -42,6 +42,7 @@ export default {
       this.toggleMini(false)
       this.togglePlayStatus(true)
       this.changeSongData([id])
+      console.log('aaa')
     }
   },
   computed: {
@@ -79,7 +80,8 @@ export default {
       @include bg_color()
     }
     h3{
-      @include font_size($font_large);
+      //@include font_size($font_large);
+      font-size: 33px;
       @include font_color();
       font-weight: bold;
       margin-left: 10px;
@@ -103,7 +105,8 @@ export default {
         p:nth-child(1){
           height: 50%;
           line-height: 50px;
-          @include font_size($font_medium);
+          //@include font_size($font_medium);
+          font-size: 30px;
           @include font_color_songName();
           @include no-wrap();
           @include clamp(1);
@@ -111,7 +114,8 @@ export default {
         p:nth-child(2){
           height: 50%;
           line-height: 50px;
-          @include font_size($font_samll);
+          //@include font_size($font_samll);
+          font-size: 26px;
           @include font_color;
           @include no-wrap();
           @include clamp(1);

@@ -1,6 +1,6 @@
 <template>
   <div class="singer">
-    <p>我是歌手页面</p>
+    <p>我是歌手页面..</p>
   </div>
 </template>
 

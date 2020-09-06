@@ -34,7 +34,8 @@ export default {
     text-align: center;
     line-height: 84px;
     span{
-      @include font_size($font_medium);
+      font-size:32px;
+      //@include font_size($font_medium);
       @include font_color();
     }
     &.router-link-active{

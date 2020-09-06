@@ -59,7 +59,8 @@ export default {
       @include bg_color()
     }
     h3{
-      @include font_size($font_large);
+      font-size: 33px;
+      //@include font_size($font_large);
       @include font_color();
       font-weight: bold;
       margin-left: 10px;
@@ -91,7 +92,8 @@ export default {
         text-align: center;
         @include font_color();
         @include clamp(2);
-        @include font_size($font_samll);
+        //@include font_size($font_samll);
+        font-size: 25px;
       }
     }
   }
