@@ -70,7 +70,7 @@ const routes = [
 
 // 创建vue-router实例对象
 const router = new VueRouter({
-  mode: 'history',
+  mode: 'hash',
   base: process.env.BASE_URL,
   routes
 })
