@@ -51,22 +51,26 @@ export default {
   },
   watch: {
     isPlaying (n, o) {
-      if (n) {
-        this.$refs.audio.play()
-      } else {
-        this.$refs.audio.pause()
-      }
+      this.$nextTick(() => {
+        if (n) {
+          this.$refs.audio.play()
+        } else {
+          this.$refs.audio.pause()
+        }
+      })
     },
     playMode (n, o) {
       n === 1 ? this.loopFlag = true : this.loopFlag = false
     },
     currentSong (n) {
-      if (n.songUrl === null) {
-        this.changeTipsMsg(['sorry,该歌曲暂无版权~', true])
-        this.togglePlayStatus(false)
-      } else {
-        this.songUrl = n.songUrl
-      }
+      this.$nextTick(() => {
+        if (n.songUrl === null) {
+          this.changeTipsMsg(['sorry,该歌曲暂无版权~', true])
+          this.togglePlayStatus(false)
+        } else {
+          this.songUrl = n.songUrl
+        }
+      })
     },
     currentTime (n) {
       this.$refs.audio.currentTime = n

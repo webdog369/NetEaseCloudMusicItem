@@ -42,7 +42,6 @@ export default {
       this.toggleMini(false)
       this.togglePlayStatus(true)
       this.changeSongData([id])
-      console.log('aaa')
     }
   },
   computed: {

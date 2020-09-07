@@ -71,10 +71,10 @@ export default {
       // 歌词高亮同步
       const timeLine = parseInt(time)
       this.timeLine = this.getActiveTimeLine(timeLine)
-      this.$nextTick(() => {
+      try {
         this.lyricScroll('.mini-lyric', this.$refs.miniLyric, this.$refs.miniLyricBox)
         this.lyricScroll('.lyric', this.$refs.lyric, this.$refs.lyricBox)
-      })
+      } catch (e) {}
       // // 单曲循环或列表只有一首歌时 在歌曲播完后强制回到顶部
       if (time === 0) {
         this.$refs.lyricBox.style.top = 0
